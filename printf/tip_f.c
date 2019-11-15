@@ -13,28 +13,21 @@
 #include "ft_printf.h"
 #include <math.h>
 
-int    obr_width_f(const char *s, char **v, int i, char c)
+int    obr_width_f(il *kok, char **v, int p, char c)
 {
 	char *buf;
 	int l;
-	int k;
+	int param;
 	
-	if ((k = ft_atoi(s + i)) == 0)
-		return (0);
-	l = ft_atoi(s + i) - ft_strlen(*v);
+	param = p ? kok->width : kok->point;
+	l = param - ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
 	l = l > 0 ? l : 0;
-	ft_strchr(*v, '-') && ft_strchr(s, '.') && c != ' ' && l ? l++ : l;
 	buf = (char *) malloc(l + 1);
 	buf[l] = 0;
 	ft_memset(buf, c, l);
-	if (ft_strchr(s, '-'))
+	if ((!kok->plus || (ft_strlen(buf))))
 	{
-		*v = ft_strjoin(*v, buf);
-		return (1);
-	}
-	if ((!ft_strchr(s, '+') || (ft_strlen(buf))))
-	{
-		if (ft_strlen(*v) <= k)
+		if (ft_strlen(*v) <= param)
 		{
 			if (((*v)[0] == '-' || (*v)[0] == '+' || (*v)[0] == ' ') && c == '0')
 			{
@@ -47,18 +40,16 @@ int    obr_width_f(const char *s, char **v, int i, char c)
 	return (1);
 }
 
-void obr_point_f(const char *s, char **v, int f)
+void obr_point_f(il *kok, char **v)
 {
 	int len;
 	char *p;
 	
-	if (!s)
-		return;
 	len = 6;
-	if ((p = ft_strchr(s, '.')))
+	if (kok->point > 0)
 	{
-		if ((len = ft_atoi(p + 1)) > 20)
-			obr_width_f(s, v, 1, '0');
+		if (kok->point > 20)
+			obr_width_f(kok, v, 0, '0');
 		else
 			(*v)[len + ft_strlen2(*v, '.') + 1] = 0;
 	}
@@ -70,26 +61,14 @@ void obr_point_f(const char *s, char **v, int f)
 	}
 }
 
-char * mop_f(const char *s, char *v)
+char *mop_f(il *kok, char *v)
 {
-	int i;
-
-	obr_mines(ft_strstr(s, "-"), &v);
-	if (ft_strstr(s, "+"))
-		if (v[0] != '-' )
-			v = ft_strjoin("+", v);
-	i = 0;
-	obr_point_f(s, &v, ft_atoi(s) && ft_strchr(s, '#'));
-	obr_space(ft_strstr(s, " "), &v);
-	while (s[i])
-	{
-		if (s[i] > '0' && s[i] <= '9' && s[i-1] != '.')
-		{
-			if (obr_width_f(s, &v, i, space_or_zero(s, i)))
-				break;
-		}
-		i++;
-	}
+	obr_mines(kok, &v);
+	if (kok->plus && v[0] != '-')
+		v = ft_strjoin("+", v);
+	obr_point_f(kok, &v);
+	obr_space(kok, &v);
+	obr_width_f(kok, &v, 1, space_or_zero(kok));
 	ft_putstr(v);
 	return (v);
 }
@@ -125,15 +104,20 @@ long double okrug(long double v)
 	return (v);
 }
 
-char* table_f(char *s, va_list ar) //округление
+char* table_f(il *kok, va_list ar) //округление
 {
 	long double v;
 	char* tail;
 	
-	if (ft_strchr(s, 'L'))
-		v = va_arg(ar, long double);
+	if (kok->speth)
+	{
+		if (kok->speth[0] == 'L')
+			v = va_arg(ar, long double);
+		if (kok->speth[0] == 'l')
+			v = va_arg(ar, double);
+	}
 	else
 		v = va_arg(ar, double);
 	tail = ft_strjoin(".", ft_itoa_2(ft_tail(okrug(v))));
-	return (mop_f(s, ft_strjoin(ft_itoa(v), tail)));
+	return (mop_f(kok, ft_strjoin(ft_itoa(v), tail)));
 }

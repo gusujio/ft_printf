@@ -12,24 +12,22 @@
 
 #include "ft_printf.h"
 
-int    obr_width_o(const char *s, char **v, int i, char c)
+int    obr_width_o(il *kok, char **v, int p, char c)
 {
     char *buf;
     int l;
-    int k;
-
-    if ((k = ft_atoi(s + i)) == 0)
-        return (0);
-    l = ft_atoi(s + i) - ft_strlen(*v);
-    l = l > 0 ? l : 0;
-    buf = (char *) malloc(l + 1);
-    buf[l] = 0;
-    ft_memset(buf, c, l);
-    if (ft_strchr(s, '-'))
-    {
-        *v = ft_strjoin(*v, buf);
-        return (1);
-    }
+	int param;
+	int k;
+	
+	param = p ? kok->width : kok->point;
+	if (param < 0 && kok->mines)
+		return (0);
+	k = ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
+	l = param - k;
+	l = l > 0 ? l : 0;
+	buf = (char *) malloc(l + 1);
+	buf[l] = 0;
+	ft_memset(buf, c, l);
     if (((*v)[0] == '-' || (*v)[0] == '+' || (*v)[0] == ' ') && c == '0')
     {
         buf[0] = (*v)[0];
@@ -40,53 +38,41 @@ int    obr_width_o(const char *s, char **v, int i, char c)
         buf[1] = 'x';
         (*v)[1] = '0';
     }
-    *v = ft_strjoin(buf, *v);
+	if (kok->mines && param != kok->point)
+		*v = ft_strjoin(*v, buf);
+	else
+		*v = ft_strjoin(buf, *v);
     return (1);
 }
 
-void obr_point_o(const char *s, char **v, int f)
+void obr_point_o(il *kok, char **v)
 {
-    if (!s)
-        return;
-    if (!(ft_strchr(s,'o') && f))
-    {
-        if (!ft_atoi(s + 1) && !ft_atoi(*v)) // ноль игнорируется
-        {
-            *v = "";
-            return;
-        }
-    }
-    obr_width_o(s, v, 1, '0');
+	if (!kok->point && !kok->v_i) // ноль игнорируется
+	{
+		if (kok->resh)
+			(*v)[1] = 0;
+		else
+			*v = "";
+		return;
+	}
+	obr_width_o(kok, v,0, '0');
 }
 
-char * mop_o(const char *s, char *v)
+char    *mop_o(il *kok, char *v)
 {
-    int i;
-    char c;
-    int l;
-
-    obr_mines(ft_strstr(s, "-"), &v);
-    obr_resh(ft_strstr(s, "#"), &v);
-    i = 0;
-    obr_point_o(ft_strstr(s, "."), &v, !!ft_strstr(s, "#"));
-    while (s[i])
-    {
-        if (s[i] > '0' && s[i] <= '9' && s[i-1] != '.')
-        {
-            if (obr_width_o(s, &v, i, space_or_zero(s, i)))
-                break;
-        }
-        i++;
-    }
+	obr_resh(kok, &v);
+	obr_point_o(kok, &v);
+    obr_width_o(kok, &v, 1, space_or_zero(kok));
 	ft_putstr(v);
     return (v);
 }
 
-char* table_o(char *s, va_list ar , char c)
+char* table_o(il *kok, va_list ar)
 {
     void *v;
-
-    if (s[0] && ((v = flag_unsign(s, ar)) == (void *)-2))
+	
+	if ((v = flag_unsign(kok, ar)) == (void *)-2)
         v = (void *) va_arg(ar, unsigned int);
-    return (mop_o(s, perevod(v, c)));
+	kok->v_i = v;
+    return (mop_o(kok, perevod(v, kok->type)));
 }

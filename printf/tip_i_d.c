@@ -12,26 +12,23 @@
 
 #include "ft_printf.h"
 
-int    obr_width_i_d(const char *s, char **v, int i, char c)
+int    obr_width_i_d(il *kok, char **v,int p, char c)
 {
 	char *buf;
 	int l;
 	int k;
+	int param;
 	
-	if ((k = ft_atoi(s + i)) == 0)
+	param = p ? kok->width : kok->point;
+	if (param < 0 && kok->mines)
 		return (0);
-	l = ft_atoi(s + i) - ft_strlen(*v);
+	k = ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
+	l = param - k;
 	l = l > 0 ? l : 0;
-	ft_strchr(*v, '-')  && ft_strchr(s, '.') && c != ' ' && l ? l++ : l; // если есть минус, то прибавим знак
 	buf = (char *) malloc(l + 1);
 	buf[l] = 0;
 	ft_memset(buf, c, l);
-	if (ft_strchr(s, '-'))
-	{
-		*v = ft_strjoin(*v, buf);
-		return (1);
-	}
-	if ((!ft_strchr(s, '+') || (ft_strlen(buf))) && ft_strlen(*v) <= k)
+	if (l && k <= param)
 	{
 		if (((*v)[0] == '-' || (*v)[0] == '+' || (*v)[0] == ' ') && c == '0')
 		{
@@ -39,51 +36,40 @@ int    obr_width_i_d(const char *s, char **v, int i, char c)
 			(*v)[0] = '0';
 		}
 	}
-	*v = ft_strjoin(buf, *v);
+	if (kok->mines && param != kok->point)
+		*v = ft_strjoin(*v, buf);
+	else
+		*v = ft_strjoin(buf, *v);
 	return (1);
 }
-void obr_point_i_d(const char *s, char **v)
+void obr_point_i_d(il *kok, char **v)
 {
-	if (!s)
+	if (kok->point < 0)
 		return;
-	if (!ft_atoi(s + 1) && !ft_atoi(*v)) // ноль игнорируется
+	if (!kok->point && !ft_atoi(*v))
 	{
 		*v = "";
 		return;
 	}
-	obr_width_i_d(s, v, 1, '0');
+	obr_width_i_d(kok, v, 0, '0');
 }
-char * mop_i_d(const char *s, char *v)
+
+char * mop_i_d(il *kok, char *v)
 {
-	int i;
-	char c;
-	char *l;
-	
-	obr_mines(ft_strstr(s, "-"), &v);
-	if (ft_strstr(s, "+"))
-		if (v[0] != '-')
-			v = ft_strjoin("+", v);
-	i = 0;
-	obr_point_i_d(ft_strstr(s, "."), &v);
-	obr_space(ft_strstr(s, " "), &v);
-	while (s[i])
-	{
-		if (s[i] > '0' && s[i] <= '9' && s[i-1] != '.')
-		{
-			if (obr_width_i_d(s, &v, i, space_or_zero(s, i)))
-				break;
-		}
-		i++;
-	}
+	obr_point_i_d(kok, &v);
+	if (kok->plus && v[0] != '-')
+		v = ft_strjoin("+", v);
+	obr_space(kok, &v);
+	obr_width_i_d(kok, &v, 1, space_or_zero(kok));
 	ft_putstr(v);
 	return (v);
 }
 
-char* table_i_d(char *s, va_list ar)
+char* table_i_d(il *kok, va_list ar)
 {
 	void *v;
 	
-	if (s[0] && ((v = flag_sign(s, ar)) == (void *)-2))
+	if ((v = flag_sign(kok, ar)) == (void *)-2)
 		v = (void *) va_arg(ar, int);
-	return (mop_i_d(s, ft_itoa(v)));
+	return (mop_i_d(kok, ft_itoa(v)));
 }

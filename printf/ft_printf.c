@@ -1,5 +1,5 @@
 #include "ft_printf.h"
-
+#define ui_pos_1
 int		get_nb_size(unsigned long long int nb)
 {
 	unsigned long long int size;
@@ -91,131 +91,168 @@ size_t	ft_strlen3(const char *s, const char *c)
 	return (0);
 }
 
-void obr_mines(const char *s, char **v)
+void obr_mines(il *kok, char **v)
 {
 	int l;
 	char *buf;
-	char c;
-	if (!s)
-		return;
-	l = ft_atoi(s) - ft_strlen(*v);
-	if (l > 0)
+	
+	
+	if ((l = kok->width - ft_strlen(*v)) > 0 && kok->mines && kok->width > kok->point)
 	{
 		buf = (char *) malloc(l);
-		c = s[0] == '0' ? '0' : ' ';
-		ft_memset(buf, c, l);
+		ft_memset(buf,  kok->str[0] == '0' ? '0' : ' ', l);
 		*v = ft_strjoin(*v, buf);
 	}
 }
 
-void obr_resh(const char *s, char **v)
+void obr_resh(il *kok, char **v)
 {
-	if (!s)
+	if (!kok->resh)
 		return;
-	if (ft_strstr(s, "p"))
+	if (kok->type == 'p')
 		*v = ft_strjoin("0x", *v);
-	if (!ft_atoi(*v))
+	if ((*v)[0] == '0' && !kok->v_i && kok->point)//&& ((kok->type == 'x') || (kok->type == 'X') || (kok->type == 'o')
+	{
+		kok->resh = 0;
 		return;
-	if (ft_strstr(s, "x"))
+	}
+	if (kok->type == 'x')
 		*v = ft_strjoin("0x", *v);
-	else if (ft_strstr(s, "X"))
+	else if (kok->type == 'X')
 		*v = ft_strjoin("0X", *v);
-	else if (ft_strstr(s, "o"))
+	else if (kok->type == 'o')
 		*v = ft_strjoin("0", *v);
 }
 
-void obr_space(const char *s, char **v)
+void obr_space(il *kok, char **v)
 {
-	if (!s || (!ft_strstr(s, "d") && !ft_strstr(s, "i")))
+	if (!kok->space || (kok->type != 'd' && kok->type != 'i'))
 		return;
 	if ((*v)[0] != '-' && (*v)[0] != '+')
 		*v = ft_strjoin(" ", *v);
 }
 
-void * flag_sign(char *f, va_list ar)
+void * flag_sign(il *kok, va_list ar)
 {
 	void *error;
 
 	error = (void *)-2;
-	if (ft_strstr(f, "hh"))
-		return ((void*)va_arg(ar, signed char));
-	else if (f[0] == 'h')
-		return ((void*)va_arg(ar,short int));
-	else if (ft_strstr(f, "ll"))
-		return ((void*)va_arg(ar,long long int));
-	else if (ft_strstr(f, "l"))
-		return ((void*)va_arg(ar,long int));
-	return (error);
-}
-
-void *flag_unsign(char *f, va_list ar)
-{
-	void *error;
-
-	error = (void *)-2;
-	if (ft_strstr(f, "hh"))
-		return ((void*)va_arg(ar, unsigned char));
-	else if (f[0] == 'h')
-		return ((void*)va_arg(ar,unsigned short int));
-	else if (ft_strstr(f, "ll"))
-		return ((void*)va_arg(ar,unsigned long long int));
-	else if (ft_strstr(f, "l"))
-		return ((void *) va_arg(ar, unsigned long int));
-	return (error);
-}
-
-char space_or_zero(char *s, int i)
-{
-	char *l;
-	char *e;
-	int k;
-	
-	l = ft_memchr(s, '0', i);
-	k = 0;
-	if ((e = ft_strchr(s, '.')) && !ft_strchr(s, '-'))
+	if (kok->speth)
 	{
-		if ((k = ft_atoi(e + 1)) >= 0 && ft_atoi(s) < k)
-			return ('0');
+		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
+			return ((void *) va_arg(ar, signed char));
+		else if (kok->speth[0] == 'h')
+			return ((void *) va_arg(ar, short int));
+		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
+			return ((void *) va_arg(ar, long long int));
+		else if (kok->speth[0] == 'l')
+			return ((void *) va_arg(ar, long int));
 	}
-	if (l && !ft_strchr(s, '-') && (ft_atoi(s) < k || k == 0))
-		return ('0');
-	else
-		return (' ');
+	return (error);
 }
 
-char* table(char c, va_list ar, char *s)
+void *flag_unsign(il *kok, va_list ar)
 {
-	if (c == 'c')
-		return (obr_char(s, ar));
-	else if (c == 's' || c == '%')
-		return (table_s_c(s, ar));
-	else if (c == 'd' || c == 'i')
-		return (table_i_d(s, ar));
-	else if (c == 'x' || c == 'X')
-		return (table_x_X(s, ar, c));
-	else if (c == 'o')
-		return (table_o(s, ar, c));
-	else if (c == 'u')
-		return (table_u(s, ar));
-	else if (c == 'p')
-		return (table_p(s, ar));
-	else if (c == 'f')
-		return (table_f(s, ar));
+	void *error;
+
+	error = (void *)-2;
+	if (kok->speth)
+	{
+		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
+			return ((void *) va_arg(ar, unsigned char));
+		else if (kok->speth[0] == 'h')
+			return ((void *) va_arg(ar, unsigned short int));
+		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
+			return ((void *) va_arg(ar, unsigned long long int));
+		else if (kok->speth[0] == 'l')
+			return ((void *) va_arg(ar, unsigned long int));
+	}
+	return (error);
 }
 
-char* obrabotka_zv(char *s, va_list ar)
+char space_or_zero(il *kok)
+{
+	if (kok->point == -1 && !kok->mines && kok->zero)
+		return '0';
+	if (!kok->mines && kok->width < kok->point && kok->zero)
+		return '0';
+	return (' ');
+}
+
+char* table(va_list ar, il *kok)
+{
+	
+	if (kok->type == 'c')
+		return (obr_char(kok, ar));
+	else if (kok->type == 's' || kok->type== '%')
+		return (table_s_c(kok, ar));
+	else if (kok->type == 'd' || kok->type == 'i')
+		return (table_i_d(kok, ar));
+	else if (kok->type == 'x' || kok->type == 'X')
+		return (table_x_X(kok, ar));
+	else if (kok->type == 'o')
+		return (table_o(kok, ar));
+	else if (kok->type == 'u')
+		return (table_u(kok, ar));
+	else if (kok->type == 'p')
+		return (table_p(kok, ar));
+	else if (kok->type == 'f')
+		return (table_f(kok, ar));
+}
+
+void obr_struct(il **kok, const char *s)
+{
+	char *k;
+	int i;
+	
+	i = 0;
+	(*kok)->str = ft_strdup(s);
+	while (s[i] && s[i] < '1' && s[i] != '.')
+	{
+		(*kok)->mines += s[i] == '-';
+		(*kok)->plus += s[i] == '+';
+		(*kok)->space += s[i] == ' ';
+		(*kok)->resh += s[i] == '#';
+		(*kok)->zero += s[i] == '0' && s[i - 1] != '-';
+		i++;
+	}
+	(*kok)->width = ft_atoi(s + i);
+	(*kok)->point = -1;
+	if ((k = strchr(s, '.')))
+		(*kok)->point = ft_atoi(k + 1);
+	(*kok)->speth = (char *) malloc(3);
+	(*kok)->speth = NULL;
+	while (s[i] && !(*kok)->speth)
+	{
+		if (s[i] == 'l' && s[i + 1] != 'l')
+			(*kok)->speth = ft_strdup("l");
+		else if (s[i] == 'l')
+			(*kok)->speth = ft_strdup("ll");
+		else if (s[i] == 'h' && s[i + 1] != 'h')
+			(*kok)->speth = ft_strdup("h");
+		else if (s[i] == 'h')
+			(*kok)->speth = ft_strdup("hh");
+		else if (s[i] == 'L')
+			(*kok)->speth = ft_strdup("L");
+		i++;
+	}
+	(*kok)->type = s[ft_strlen(s) - 1];
+}
+
+char* obr_zv(char *s, va_list ar)
 {
 	int i;
 	char *s2;
-	i = 0;
 	
-	s2 = s;
-	while (s[i])
+	i = ft_strlen3(s, "cspdioufxX%");
+	s[i + 1] = 0;
+	s2 = ft_strdup(s);
+	i = 0;
+	while (s[i] && s[i] != ' ')
 	{
 		if (s[i] == '*')
 		{
-			s2 = ft_itoa(va_arg(ar,
-			int));
+			s2 = ft_itoa(va_arg(ar, int));
 			if (ft_isdigit(s[i + 1]) || (s[i - 1] == '.' && s2[0] == '-'))
 			{
 				s2 = "";
@@ -234,12 +271,12 @@ char* obrabotka_zv(char *s, va_list ar)
 int ft_printf(const char *restrict format, ...)
 {
 	va_list ar;
-	int i;
+	int i ;
 	int len;
-	int j;
 	char *s;
-	char *s2;
 	
+	il *kok = malloc(sizeof(il));
+	ft_bzero(kok, sizeof(il));
 	i = 0;
 	len = 0;
 	va_start(ar, format);
@@ -247,12 +284,11 @@ int ft_printf(const char *restrict format, ...)
 	{
 		if (format[i] == '%' && format[i + 1])
 		{
-			i++;
-			s2 = ft_strsub(format, i, (j = ft_strlen3(format + i, "cspdiouxXf%")) + 1);
-			s = table(format[i + j], ar, obrabotka_zv(s2, ar));
-			i += j;
-			len += s == NULL ? 1 : 0;
-			len += (ft_mod(ft_atoi(s2)) < ft_strlen(s) ? ft_strlen(s) : ft_mod(ft_atoi(s2)));
+			obr_struct(&kok, obr_zv(ft_strdup(format + i + 1), ar));
+			s = table(ar, kok);
+			i+= ft_strlen2(format + i + 1, kok->type) + 1;
+			len += s == NULL ? 1 : ft_strlen(s);
+			ft_bzero(kok, sizeof(il));
 		}
 		else if (!(format[i] == '%' && !format[i + 1]))
 		{
@@ -265,8 +301,8 @@ int ft_printf(const char *restrict format, ...)
 	return (len);//бонус - печать битов
 }
 
-int main()//
+int main()//("%#.0o", 0)
 {
-	printf(" = %d\n", printf("%.03s", NULL));
-	printf(" = %d\n", ft_printf("%.03s", NULL));
+	printf(" = %d\n", printf("this %f float", 1.5));
+	printf(" = %d\n", ft_printf("this %f float", 1.5));
 }
