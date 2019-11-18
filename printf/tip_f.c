@@ -22,10 +22,12 @@ int    obr_width_f(il *kok, char **v, int p, char c)
 	param = p ? kok->width : kok->point;
 	l = param - ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
 	l = l > 0 ? l : 0;
+	if (p == 2)
+		l = kok->width;
 	buf = (char *) malloc(l + 1);
 	buf[l] = 0;
 	ft_memset(buf, c, l);
-	if ((!kok->plus || (ft_strlen(buf))))
+	if ((!kok->plus || (ft_strlen(buf))) && p)
 	{
 		if (ft_strlen(*v) <= param)
 		{
@@ -36,34 +38,38 @@ int    obr_width_f(il *kok, char **v, int p, char c)
 			}
 		}
 	}
-	*v = ft_strjoin(buf, *v);
+	if ((kok->mines && param != kok->point) || (kok->point > 19 && !p) || p == 2)
+		*v = ft_strjoin(*v, buf);
+	else
+		*v = ft_strjoin(buf, *v);
 	return (1);
 }
 
 void obr_point_f(il *kok, char **v)
 {
 	int len;
-	char *p;
+	int p;
 	
-	len = 6;
-	if (kok->point > 0)
+	p = ft_strlen2(*v , '.');
+	len = ft_strlen(*v + p) - 1;
+	kok->point = kok->point == -1 ? 6 : kok->point;
+	if (len < kok->point)//если меньше нормы, то дакидывем нулей
 	{
-		if (kok->point > 20)
-			obr_width_f(kok, v, 0, '0');
-		else
-			(*v)[len + ft_strlen2(*v, '.') + 1] = 0;
+		kok->width = kok->point - len;
+		kok->mines = 1;
+		obr_width_f(kok, v, 2, '0');
 	}
 	else
 	{
-		(*v)[len + ft_strlen2(*v, '.') + 1] = 0;
-		if (ft_strlen(ft_strchr(*v, '.') + 1) < 6)
-			*v = ft_strjoin(*v, "00000");
+		if (kok->point != -1)
+			(*v)[p + kok->point + (kok->point || kok->resh)] = 0;
+		else
+			(*v)[p + 7] = 0;
 	}
 }
 
 char *mop_f(il *kok, char *v)
 {
-	obr_mines(kok, &v);
 	if (kok->plus && v[0] != '-')
 		v = ft_strjoin("+", v);
 	obr_point_f(kok, &v);
@@ -72,52 +78,51 @@ char *mop_f(il *kok, char *v)
 	ft_putstr(v);
 	return (v);
 }
-
-unsigned long long int ft_tail(long double v)
+/*
+typedef union
 {
-	long long int k;
-	int z;
-	unsigned long long int t;
-	
-	v = v - (long long int)v;
-	t = 0;
-	k = 0;
-	while (k++ < 19)
+	float f;
+	struct
 	{
-		t *= 10;
-		t += ft_mod((v * 10));
-		z = (v > 0 ? -1 : 1);
-		v = (v + ((float)(t % 10) / 10) * z) * 10;
-	}
-	return (t);
-}
-
-long double okrug(long double v)
+		unsigned int mantisa : 23;
+		unsigned int exponent : 8;
+		unsigned int sign : 1;
+	} parts;
+} float_cast;
+*/
+typedef union types
 {
-	long long int k;
+	long double f;
+	unsigned long long m;
+	short int e[5];
+} ilia;
+
+void persey(unsigned char c)
+{
+	int k;
+	int i;
 	
-	k = v;
-	v = v - k;
-	v = v * 1000000;
-	v += k ? ft_mod(k) / k : 0;
-	v = v / 1000000 + k;
-	return (v);
+	i = 0;
+	k = 128;
+	while (i < 8)
+	{
+		printf("%d", !!(c & k));
+		k = k >> 1;
+		i++;
+	}
 }
 
 char* table_f(il *kok, va_list ar) //округление
 {
-	long double v;
-	char* tail;
+	ilia ili;
+	int z;
+	 // m  = 1 , e = 3 16383
+	ili.f =  -8.0L;
+	z = ili.e[4] >> 15;
+	ili.e[4] = ili.e[4] & 0x7fff;
+	ili.e[4] -= 16383 + 63;
 	
-	if (kok->speth)
-	{
-		if (kok->speth[0] == 'L')
-			v = va_arg(ar, long double);
-		if (kok->speth[0] == 'l')
-			v = va_arg(ar, double);
-	}
-	else
-		v = va_arg(ar, double);
-	tail = ft_strjoin(".", ft_itoa_2(ft_tail(okrug(v))));
-	return (mop_f(kok, ft_strjoin(ft_itoa(v), tail)));
+
+	printf("\n");
+	return (mop_f(kok, "s"));
 }
