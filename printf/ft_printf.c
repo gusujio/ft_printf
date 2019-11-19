@@ -126,7 +126,7 @@ void obr_resh(il *kok, char **v)
 
 void obr_space(il *kok, char **v)
 {
-	if (!kok->space || (kok->type != 'd' && kok->type != 'i'))
+	if (!kok->space)
 		return;
 	if ((*v)[0] != '-' && (*v)[0] != '+')
 		*v = ft_strjoin(" ", *v);
@@ -172,10 +172,12 @@ void *flag_unsign(il *kok, va_list ar)
 
 char space_or_zero(il *kok)
 {
+	if (kok->type == 'f' && !kok->mines && kok->zero )
+		return ('0');
 	if (kok->point == -1 && !kok->mines && kok->zero)
-		return '0';
+		return ('0');
 	if (!kok->mines && kok->width < kok->point && kok->zero)
-		return '0';
+		return ('0');
 	return (' ');
 }
 
@@ -298,11 +300,40 @@ int ft_printf(const char *restrict format, ...)
 		i++;
 	}
 	va_end(ar);
-	return (len);//бонус - печать битов
-}
+	return (len);
+}//596 //595 ("%.32Lf", 0.237l)
 
-int main()//("%#.0o", 0)
+//608
+#include <float.h>
+#include <stdio.h>
+/*
+int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
 {
-	printf(" = %d\n", printf("this %f float", 1.5));
-	printf(" = %d\n", ft_printf("this %f float", 1.5));
+	printf(" = %d\n", printf("%.0f", DBL_MAX));
+	printf(" = %d\n\n", ft_printf("%.0f", DBL_MAX));
+	
+	printf(" = %d\n", printf("%.3f", DBL_MAX));
+	printf(" = %d\n\n", ft_printf("%.3f", DBL_MAX));
+	
+	printf(" = %d\n", printf("%.2000f", 623.28376510723481));
+	printf(" = %d\n\n", ft_printf("%.2000f", 623.28376510723481));
+	
+	printf(" = %d\n", printf("%.3f", DBL_MAX));
+	printf(" = %d\n\n", ft_printf("%.3f", DBL_MAX));
+	
+	printf(" = %d\n", printf("%f", -9.9999999));
+	printf(" = %d\n\n", ft_printf("%f", -9.9999999));
+	
+	printf(" = %d\n", printf("%.0f", 573.924));
+	printf(" = %d\n\n", ft_printf("%.0f", 573.924));
+	
+	printf(" = %d\n", printf("%f", -5.9999999));
+	printf(" = %d\n\n", ft_printf("%f", -5.9999999));
+	
+	printf(" = %d\n", printf("%f", 0.0894255));
+	printf(" = %d\n\n", ft_printf("%f", 0.0894255));
+	
+	printf(" = %d\n", printf("%f", 0.000039));
+	printf(" = %d\n\n", ft_printf("%f", 0.000039));
 }
+*/

@@ -15,6 +15,10 @@
 # include "libft/libft.h"
 # include <stdarg.h>
 
+
+#include <float.h>
+#include <stdio.h>
+
 typedef struct  ilia
 {
 	char        type;
@@ -28,9 +32,13 @@ typedef struct  ilia
 	int         width;
 	int         point;
 	void*         v_i;
-	
+	long double   v_f;
 }               il;
-
+char            *del10(char *s, int k);
+char            *ft_degr5(int k);
+char            *ft_degr2(int k);
+char            *ft_multi(char *wer1, char* wer);
+int             *ft_revers_ari(const int *ar, int size);
 int             ft_printf(const char *restrict format, ...);
 int             get_nb_size(unsigned long long int nb);
 char            *ft_itoa_2(unsigned long long int nbr);
