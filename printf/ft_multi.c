@@ -12,21 +12,6 @@
 
 #include "ft_printf.h"
 
-void ft_bit(unsigned char c)
-{
-	int k;
-	int i;
-	
-	i = 0;
-	k = 128;
-	while (i < 8)
-	{
-		printf("%d", !!(c & k));
-		k = k >> 1;
-		i++;
-	}
-}
-
 char *del10(char *s, int k)
 {
 	int len;

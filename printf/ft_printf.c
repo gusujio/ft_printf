@@ -91,27 +91,13 @@ size_t	ft_strlen3(const char *s, const char *c)
 	return (0);
 }
 
-void obr_mines(il *kok, char **v)
-{
-	int l;
-	char *buf;
-	
-	
-	if ((l = kok->width - ft_strlen(*v)) > 0 && kok->mines && kok->width > kok->point)
-	{
-		buf = (char *) malloc(l);
-		ft_memset(buf,  kok->str[0] == '0' ? '0' : ' ', l);
-		*v = ft_strjoin(*v, buf);
-	}
-}
-
 void obr_resh(il *kok, char **v)
 {
 	if (!kok->resh)
 		return;
 	if (kok->type == 'p')
 		*v = ft_strjoin("0x", *v);
-	if ((*v)[0] == '0' && !kok->v_i && kok->point)//&& ((kok->type == 'x') || (kok->type == 'X') || (kok->type == 'o')
+	if ((*v)[0] == '0' && !kok->v_i && kok->point)
 	{
 		kok->resh = 0;
 		return;
@@ -130,6 +116,36 @@ void obr_space(il *kok, char **v)
 		return;
 	if ((*v)[0] != '-' && (*v)[0] != '+' && ft_strcmp(*v, "nan"))
 		*v = ft_strjoin(" ", *v);
+}
+
+char *ft_strup(const char *s)
+{
+	char *s2;
+	int i;
+	
+	s2 = (char*)malloc((i =  ft_strlen(s)));
+	s2[i] = 0;
+	while (--i >= 0)
+	{
+		s2[i] = s[i];
+		s2[i] = (char)ft_toupper(s2[i]);
+	}
+	return (s2);
+}
+
+char *ft_strdow(const char *s)
+{
+	char *s2;
+	int i;
+	
+	s2 = (char*)malloc((i = ft_strlen(s)));
+	s2[i] = 0;
+	while (--i >= 0)
+	{
+		s2[i] = s[i];
+		s2[i] = (char)ft_tolower(s2[i]);
+	}
+	return (s2);
 }
 
 void * flag_sign(il *kok, va_list ar)
@@ -200,6 +216,10 @@ char* table(va_list ar, il *kok)
 		return (table_p(kok, ar));
 	else if (kok->type == 'f')
 		return (table_f(kok, ar));
+	else if (kok->type == 'm')
+		table_m(kok, ar);
+	else if (kok->type == 'b')
+		ft_bit(va_arg(ar, int));
 }
 
 void obr_struct(il **kok, const char *s)
@@ -241,12 +261,16 @@ void obr_struct(il **kok, const char *s)
 	(*kok)->type = s[ft_strlen(s) - 1];
 }
 
-char* obr_zv(char *s, va_list ar)
+char* obr_zv(const char *s0, va_list ar, int *len)
 {
 	int i;
 	char *s2;
+	char *s;
 	
-	i = ft_strlen3(s, "cspdioufxX%");
+	*len += (i = ft_strlen3(s0, "cspdioufxmX%")) + 1;
+	s = ft_strdup(s0);
+	if (s[i] == 'D' || s[i] == 'C' || s[i] == 'F' || s[i] == 'S' || s[i] == 'P')
+		s[i] += 32;
 	s[i + 1] = 0;
 	s2 = ft_strdup(s);
 	i = 0;
@@ -286,10 +310,9 @@ int ft_printf(const char *restrict format, ...)
 	{
 		if (format[i] == '%' && format[i + 1])
 		{
-			obr_struct(&kok, obr_zv(ft_strdup(format + i + 1), ar));
+			obr_struct(&kok, obr_zv(format + i + 1, ar, &i));
 			s = table(ar, kok);
-			i+= ft_strlen2(format + i + 1, kok->type) + 1;
-			len += s == NULL ? 1 : ft_strlen(s);
+			len += s == NULL ? 1 : (int)ft_strlen(s);
 			ft_bzero(kok, sizeof(il));
 		}
 		else if (!(format[i] == '%' && !format[i + 1]))
@@ -301,16 +324,18 @@ int ft_printf(const char *restrict format, ...)
 	}
 	va_end(ar);
 	return (len);
-}//596 //595 ("%.32Lf", 0.237l)
+}
 
-//687
+//2661
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
 /*
 int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
 {
-	printf(" = %d\n", printf("% .7f", 1.0 / 0));
-	printf(" = %d\n\n", ft_printf("% .7f", 1.0 / 0));
+	char *str = "www";
+	char *filename = "eee";
+	ft_printf(PGC"%s"EPC, str);
+	//ft_printf("%b", 23);
 }
 */
