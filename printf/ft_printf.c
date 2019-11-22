@@ -128,7 +128,7 @@ void obr_space(il *kok, char **v)
 {
 	if (!kok->space)
 		return;
-	if ((*v)[0] != '-' && (*v)[0] != '+')
+	if ((*v)[0] != '-' && (*v)[0] != '+' && ft_strcmp(*v, "nan"))
 		*v = ft_strjoin(" ", *v);
 }
 
@@ -172,11 +172,11 @@ void *flag_unsign(il *kok, va_list ar)
 
 char space_or_zero(il *kok)
 {
-	if (kok->type == 'f' && !kok->mines && kok->zero )
+	if (kok->type == 'f' && !kok->mines && kok->zero && kok->str[0] != 1)
 		return ('0');
-	if (kok->point == -1 && !kok->mines && kok->zero)
+	if (kok->point == -1 && !kok->mines && kok->zero && kok->str[0] != 1)
 		return ('0');
-	if (!kok->mines && kok->width < kok->point && kok->zero)
+	if (!kok->mines && kok->width < kok->point && kok->zero && kok->str[0] != 1)
 		return ('0');
 	return (' ');
 }
@@ -303,37 +303,14 @@ int ft_printf(const char *restrict format, ...)
 	return (len);
 }//596 //595 ("%.32Lf", 0.237l)
 
-//608
+//687
 #include <float.h>
 #include <stdio.h>
+#include <math.h>
 /*
 int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
 {
-	printf(" = %d\n", printf("%.0f", DBL_MAX));
-	printf(" = %d\n\n", ft_printf("%.0f", DBL_MAX));
-	
-	printf(" = %d\n", printf("%.3f", DBL_MAX));
-	printf(" = %d\n\n", ft_printf("%.3f", DBL_MAX));
-	
-	printf(" = %d\n", printf("%.2000f", 623.28376510723481));
-	printf(" = %d\n\n", ft_printf("%.2000f", 623.28376510723481));
-	
-	printf(" = %d\n", printf("%.3f", DBL_MAX));
-	printf(" = %d\n\n", ft_printf("%.3f", DBL_MAX));
-	
-	printf(" = %d\n", printf("%f", -9.9999999));
-	printf(" = %d\n\n", ft_printf("%f", -9.9999999));
-	
-	printf(" = %d\n", printf("%.0f", 573.924));
-	printf(" = %d\n\n", ft_printf("%.0f", 573.924));
-	
-	printf(" = %d\n", printf("%f", -5.9999999));
-	printf(" = %d\n\n", ft_printf("%f", -5.9999999));
-	
-	printf(" = %d\n", printf("%f", 0.0894255));
-	printf(" = %d\n\n", ft_printf("%f", 0.0894255));
-	
-	printf(" = %d\n", printf("%f", 0.000039));
-	printf(" = %d\n\n", ft_printf("%f", 0.000039));
+	printf(" = %d\n", printf("% .7f", 1.0 / 0));
+	printf(" = %d\n\n", ft_printf("% .7f", 1.0 / 0));
 }
 */

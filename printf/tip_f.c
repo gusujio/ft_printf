@@ -29,7 +29,7 @@ int    obr_width_f(il *kok, char **v, int p, char c)
 	buf = (char *) malloc(l + 1);
 	buf[l] = 0;
 	ft_memset(buf, c, l);
-	if ((!kok->plus || (ft_strlen(buf))) && p)
+	if ((!kok->plus || (ft_strlen(buf))) && p == 1)
 	{
 		if (ft_strlen(*v) <= param)
 		{
@@ -61,9 +61,12 @@ void obr_point_f(il *kok, char **v)
 	kok->point = kok->point == -1 ? 6 : kok->point;
 	if (len < kok->point && kok->point != 0)//если меньше нормы, то дакидывем нулей
 	{
+		p = kok->width;
 		kok->width = kok->point - len;
 		kok->mines = 1;
 		obr_width_f(kok, v, 2, '0');
+		kok->width = p;
+		kok->mines = 0;
 	}
 	else
 	{
@@ -128,6 +131,8 @@ void okrug(il *kok, char **s)
 {
 	int p;
 	
+	if (!*s)
+		*s = ft_strdup("0");
 	kok->point = kok->point == -1 ? 6 : kok->point;
 	p = ft_strlen2(*s, '.') + kok->point + 1;
 	if ((*s)[p] >= '6')
@@ -139,7 +144,25 @@ void okrug(il *kok, char **s)
 	}
 	
 }
-
+char* inf(il *kok, ilia ili) // +inf nan
+{
+	char *man;
+	
+	man = NULL;
+	if (ili.m == 9223372036854775808 && ili.e[4] == 32767)
+		man = "inf";
+	if (ili.m == 9223372036854775808 && ili.e[4] == -1)
+		man = "-inf";
+	if (ili.f != ili.f)
+		man = "nan";
+	if (man)
+	{
+		kok->str[0] = 1;
+		man = mop_s_c(kok, man);
+		ft_putstr(man);
+	}
+	return (man);
+}
 char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 16383
 {
 	ilia ili;
@@ -156,6 +179,8 @@ char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 1638
 	}
 	else
 		ili.f = va_arg(ar, double);
+	if ((man = inf(kok, ili)))
+		return (man);
 	z = ili.e[4] >> 15;
 	ili.e[4] = ili.e[4] & 0x7fff;
 	ili.e[4] -= 16383 + 63;
@@ -166,8 +191,8 @@ char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 1638
 		tail = ft_multi(man, ft_degr2(ili.e[4]));
 	else
 		tail = del10(ft_multi(man, ft_degr5(ili.e[4] * -1)), ili.e[4] * -1);
+	okrug(kok, &tail);
 	if (--man[0] == '-' || z == -1)
 		tail = ft_strjoin("-", tail);
-	okrug(kok, &tail);
 	return (mop_f(kok, tail));
 }

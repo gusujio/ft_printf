@@ -53,6 +53,12 @@ void obr_point_s_c(il *kok, char **v)
 
 char * mop_s_c(il *kok, char *v)
 {
+	if (kok->type == 'f')
+	{
+		if (kok->plus && v[0] != '-' && ft_strcmp(v, "nan"))
+			v = ft_strjoin("+", v);
+		obr_space(kok, &v);
+	}
 	obr_mines(kok, &v);
 	obr_point_s_c(kok, &v);
 	obr_width_s_c(kok, &v, kok->width, v[0] ? space_or_zero(kok) : ' ');
