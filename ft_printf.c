@@ -1,47 +1,5 @@
 #include "ft_printf.h"
 #define ui_pos_1
-int		get_nb_size(unsigned long long int nb)
-{
-	unsigned long long int size;
-	
-	size = 0;
-	while (nb >= 10)
-	{
-		nb /= 10;
-		++size;
-	}
-	return (size + 1);
-}
-
-char			*ft_itoa_2(unsigned long long int nbr)
-{
-	char *str;
-	unsigned long long int nb;
-	unsigned long long int index;
-	unsigned long long int size;
-	
-	if (nbr < 0)
-		nb = (nbr * -1);
-	else
-		nb = nbr;
-	if (nbr == -9223372036854775807 - 1)
-		return (ft_strdup("-9223372036854775808"));
-	size = get_nb_size(nb);
-	index = 0;
-	if (!(str = (char *) malloc(sizeof(char) * (size + 1 + (nbr < 0 ? 1 : 0)))))
-		return (0);
-	if (nbr < 0 && (str[index] = '-'))
-		size++;
-	index = size - 1;
-	while (nb >= 10)
-	{
-		str[index--] = (char) (nb % 10 + 48);
-		nb /= 10;
-	}
-	str[index] = (char) (nb % 10 + 48);
-	str[size] = '\0';
-	return (str);
-}
 
 char *perevod(long long int x, char c) // из деситичную в указанную
 {
@@ -69,26 +27,6 @@ char *perevod(long long int x, char c) // из деситичную в указ�
 		x /= osn;
 	}
 	return (s);
-}
-
-size_t	ft_strlen3(const char *s, const char *c)
-{
-	size_t i;
-	size_t j;
-	
-	i = 0;
-	while (s[i] != 0)
-	{
-		j = 0;
-		while (c[j])
-		{
-			if (c[j] == s[i])
-				return (i);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 }
 
 void obr_resh(il *kok, char **v)
@@ -124,35 +62,6 @@ void obr_sistem(char **v,char **buf, char c)
 		(*buf)[0] = (*v)[0];
 		(*v)[0] = '0';
 	}
-}
-char *ft_strup(const char *s)
-{
-	char *s2;
-	int i;
-	
-	s2 = (char*)malloc((i =  ft_strlen(s)));
-	s2[i] = 0;
-	while (--i >= 0)
-	{
-		s2[i] = s[i];
-		s2[i] = (char)ft_toupper(s2[i]);
-	}
-	return (s2);
-}
-
-char *ft_strdow(const char *s)
-{
-	char *s2;
-	int i;
-	
-	s2 = (char*)malloc((i = ft_strlen(s)));
-	s2[i] = 0;
-	while (--i >= 0)
-	{
-		s2[i] = s[i];
-		s2[i] = (char)ft_tolower(s2[i]);
-	}
-	return (s2);
 }
 
 void * flag_sign(il *kok, va_list ar)
@@ -309,10 +218,10 @@ int ft_printf(const char *restrict format, ...)
 	
 	il *kok = malloc(sizeof(il));
 	ft_bzero(kok, sizeof(il));
-	i = 0;
+	i = -1;
 	len = 0;
 	va_start(ar, format);
-	while (format[i])
+	while (format[++i])
 	{
 		if (format[i] == '%' && format[i + 1])
 		{
@@ -326,8 +235,8 @@ int ft_printf(const char *restrict format, ...)
 			ft_putchar(format[i]);
 			len++;
 		}
-		i++;
 	}
+	free(kok);
 	va_end(ar);
 	return (len);
 }
@@ -336,12 +245,10 @@ int ft_printf(const char *restrict format, ...)
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
+
 /*
 int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
 {
-	char *str = "www";
-	char *filename = "eee";
-	
 	printf(" =%d\n" , printf("% u", 4294967295));
 	printf(" =%d\n" , ft_printf("% u", 4294967295));
 }

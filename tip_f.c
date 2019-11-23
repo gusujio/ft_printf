@@ -174,7 +174,7 @@ char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 1638
 	z = ili.e[4] >> 15;
 	ili.e[4] = ili.e[4] & 0x7fff;
 	ili.e[4] -= 16383 + 63;
-	man = ft_itoa_2(ili.m);
+	man = ft_itoa2(ili.m);
 	if (man[0] == '-')
 		man++;
 	if (ili.e[4] > 0)

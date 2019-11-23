@@ -36,6 +36,7 @@ int    obr_width_i_d(il *kok, char **v,int p, char c)
 		*v = ft_strjoin(buf, *v);
 	return (1);
 }
+
 void obr_point_i_d(il *kok, char **v)
 {
 	if (kok->point < 0)

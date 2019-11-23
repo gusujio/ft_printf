@@ -26,5 +26,5 @@ char* table_u(il *kok, va_list ar)
 	
 	if ((v = flag_unsign(kok, ar)) == (void *)-2)
 		v = (void *) va_arg(ar, unsigned int);
-	return (mop_u(kok, ft_itoa_2(v)));
+	return (mop_u(kok, ft_itoa2(v)));
 }
