@@ -30,9 +30,9 @@ int    obr_width_o(il *kok, char **v, int p, char c)
 	ft_memset(buf, c, l);
 	obr_sistem(v,&buf,c);
 	if (kok->mines && param != kok->point)
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 	else
-		*v = ft_strjoin(buf, *v);
+		*v = ft_strjoin3(buf, *v);
     return (1);
 }
 
@@ -43,7 +43,7 @@ void obr_point_o(il *kok, char **v)
 		if (kok->resh)
 			(*v)[1] = 0;
 		else
-			*v = "";
+			*v = ft_strdup("");
 		return;
 	}
 	obr_width_o(kok, v,0, '0');

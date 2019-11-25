@@ -32,7 +32,7 @@ typedef struct  ilia
 {
 	char        type;
 	char        *speth;
-	char*       str;
+	char        *str;
 	int         mines;
 	int         plus;
 	int         space;
@@ -40,9 +40,10 @@ typedef struct  ilia
 	int         zero;
 	int         width;
 	int         point;
-	void*         v_i;
+	void        *v_i;
 	long double   v_f;
 }               il;
+char            *ft_strdup2(char *s);
 char            *del10(char *s, int k);
 char            *ft_degr5(int k);
 char            *ft_degr2(int k);
@@ -57,7 +58,7 @@ char            *perevod(long long int x, char c);
 void            obr_space(il *kok, char **v);
 void            obr_resh(il *kok, char **v);
 char            *obr_zv(const char *s0, va_list ar, int *len);
-void            obr_struct(il **kok, const char *s);
+void            obr_struct(il **kok, char *s);
 void            obr_sistem(char **v,char **buf, char c);
 void            *flag_sign(il *kok, va_list ar);
 void            *flag_unsign(il *kok, va_list ar);
@@ -65,7 +66,7 @@ char            *table(va_list ar, il *kok);
 char            space_or_zero(il *kek);
 
 void            table_m(il *kok, va_list ar);
-void            ft_bit(unsigned char c);
+char            *ft_bit(unsigned char c);
 
 int             obr_width_f(il *kok, char **v, int i, char c);
 void            obr_point_f(il *kok, char **v);

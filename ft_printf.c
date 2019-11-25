@@ -1,6 +1,15 @@
 #include "ft_printf.h"
 #define ui_pos_1
 
+char *ft_strdup2(char *s)
+{
+	char *s2;
+	
+	s2 = ft_strdup(s);
+	ft_strdel(&s);
+	return (s2);
+}
+
 char *perevod(long long int x, char c) // из деситичную в указанную
 {
 	unsigned long long int osn;
@@ -34,18 +43,18 @@ void obr_resh(il *kok, char **v)
 	if (!kok->resh)
 		return;
 	if (kok->type == 'p')
-		*v = ft_strjoin("0x", *v);
+		*v = ft_strjoin2("0x", *v);
 	if ((*v)[0] == '0' && !kok->v_i && kok->point)
 	{
 		kok->resh = 0;
 		return;
 	}
 	if (kok->type == 'x')
-		*v = ft_strjoin("0x", *v);
+		*v = ft_strjoin2("0x", *v);
 	else if (kok->type == 'X')
-		*v = ft_strjoin("0X", *v);
+		*v = ft_strjoin2("0X", *v);
 	else if (kok->type == 'o')
-		*v = ft_strjoin("0", *v);
+		*v = ft_strjoin2("0", *v);
 }
 
 void obr_space(il *kok, char **v)
@@ -53,7 +62,7 @@ void obr_space(il *kok, char **v)
 	if (!kok->space)
 		return;
 	if ((*v)[0] != '-' && (*v)[0] != '+' && ft_strcmp(*v, "nan"))
-		*v = ft_strjoin(" ", *v);
+		*v = ft_strjoin2(" ", *v);
 }
 void obr_sistem(char **v,char **buf, char c)
 {
@@ -104,11 +113,14 @@ void *flag_unsign(il *kok, va_list ar)
 
 char space_or_zero(il *kok)
 {
-	if (kok->type == 'f' && !kok->mines && kok->zero && kok->str[0] != 1)
+	int y;
+	
+	y = kok->type != 'f' ? 1 : kok->resh != 1;
+	if (kok->type == 'f' && !kok->mines && kok->zero && y)
 		return ('0');
-	if (kok->point == -1 && !kok->mines && kok->zero && kok->str[0] != 1)
+	if (kok->point == -1 && !kok->mines && kok->zero && y)
 		return ('0');
-	if (!kok->mines && kok->width < kok->point && kok->zero && kok->str[0] != 1)
+	if (!kok->mines && kok->width < kok->point && kok->zero && y)
 		return ('0');
 	return (' ');
 }
@@ -134,16 +146,18 @@ char* table(va_list ar, il *kok)
 	else if (kok->type == 'm')
 		table_m(kok, ar);
 	else if (kok->type == 'b')
-		ft_bit(va_arg(ar, int));
+		return (ft_bit(va_arg(ar, int)));
+	else
+		return (ft_strdup(""));
 }
 
-void obr_struct(il **kok, const char *s)
+void obr_struct(il **kok, char *s)
 {
 	char *k;
 	int i;
 	
 	i = 0;
-	(*kok)->str = ft_strdup(s);
+	(*kok)->str = s;
 	while (s[i] && s[i] < '1' && s[i] != '.')
 	{
 		(*kok)->mines += s[i] == '-';
@@ -155,9 +169,8 @@ void obr_struct(il **kok, const char *s)
 	}
 	(*kok)->width = ft_atoi(s + i);
 	(*kok)->point = -1;
-	if ((k = strchr(s, '.')))
+	if ((k = ft_strchr(s, '.')))
 		(*kok)->point = ft_atoi(k + 1);
-	(*kok)->speth = (char *) malloc(3);
 	(*kok)->speth = NULL;
 	while (s[i] && !(*kok)->speth)
 	{
@@ -187,8 +200,8 @@ char* obr_zv(const char *s0, va_list ar, int *len)
 	if (s[i] == 'D' || s[i] == 'C' || s[i] == 'F' || s[i] == 'S' || s[i] == 'P')
 		s[i] += 32;
 	s[i + 1] = 0;
-	s2 = ft_strdup(s);
 	i = 0;
+	s2 = s;
 	while (s[i] && s[i] != ' ')
 	{
 		if (s[i] == '*')
@@ -196,17 +209,26 @@ char* obr_zv(const char *s0, va_list ar, int *len)
 			s2 = ft_itoa(va_arg(ar, int));
 			if (ft_isdigit(s[i + 1]) || (s[i - 1] == '.' && s2[0] == '-'))
 			{
-				s2 = "";
+				ft_strdel(&s2);
+				s2 = ft_strdup("");
 				s[i - 1] == '.' ? s[i - 1] = 0 : 0;
 			}
-			s2 = ft_strjoin(s2, &(s[i + 1]));
+			s2 = ft_strjoin1(s2, &(s[i + 1]));
 			s[i] = 0;
-			s2 = ft_strjoin(s, s2);
+			s2 = ft_strjoin2(s, s2);
+			ft_strdel(&s);
 			s = s2;
 		}
 		i++;
 	}
 	return (s2);
+}
+void delst(il *kok, char *s)
+{
+	ft_strdel(&kok->speth);
+	ft_strdel(&kok->str);
+	ft_strdel(&s);
+	ft_bzero(kok, sizeof(il));
 }
 
 int ft_printf(const char *restrict format, ...)
@@ -228,7 +250,7 @@ int ft_printf(const char *restrict format, ...)
 			obr_struct(&kok, obr_zv(format + i + 1, ar, &i));
 			s = table(ar, kok);
 			len += s == NULL ? 1 : (int)ft_strlen(s);
-			ft_bzero(kok, sizeof(il));
+			delst(kok, s);
 		}
 		else if (!(format[i] == '%' && !format[i + 1]))
 		{
@@ -241,7 +263,8 @@ int ft_printf(const char *restrict format, ...)
 	return (len);
 }
 
-//2661
+//2660
+//5
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
@@ -249,7 +272,7 @@ int ft_printf(const char *restrict format, ...)
 /*
 int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
 {
-	printf(" =%d\n" , printf("% u", 4294967295));
-	printf(" =%d\n" , ft_printf("% u", 4294967295));
+	printf(" =%d\n" , printf("{%*3d}", 5, 0));
+	printf(" =%d\n" , ft_printf("{%*3d}", 5, 0));
 }
 */

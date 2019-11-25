@@ -23,7 +23,7 @@ char *del10(char *s, int k)
 		k = k - len + 2;
 		s2 = ft_memset(ft_strnew(k), '0', k);
 		s2[1] = '.';
-		return (ft_strjoin(s2, s));
+		return (ft_strjoin3(s2, s));
 	}
 	s2 = ft_strnew(len + 1);
 	k = len - k - 1;
@@ -37,6 +37,7 @@ char *del10(char *s, int k)
 		}
 		s2[len + i] = s[len];
 	}
+	ft_strdel(&s);
 	return (s2);
 }
 char* ft_degr2(int k)
@@ -52,6 +53,7 @@ char* ft_degr2(int k)
 	 "18014398509481984", "36028797018963968", "72057594037927936", "144115188075855872", "288230376151711744",
 	 "576460752303423488", "1152921504606846976"};
 	char *k2;
+	char *s;
 	
 	k2 = "";
 	while (k > 0)
@@ -59,24 +61,29 @@ char* ft_degr2(int k)
 		if (k < 60)
 		{
 			if (!k2[0])
-				return (d[k - 1]);
-			return (ft_multi(d[k - 1], k2));
+				return (ft_strdup(d[k - 1]));
+			s = k2;
+			k2 = ft_multi(d[k - 1], k2);
+			ft_strdel(&s);
+			return (k2);
 		}
 		if (k >= 60 && !k2[0])
 		{
-			k2 = d[59];
+			k2 = ft_strdup(d[59]);
 			k -= 60;
 		}
 		else if (k >= 60 && k2[0])
 		{
+			s = k2;
 			k2 = ft_multi(d[59], k2);
+			ft_strdel(&s);
 			k -= 60;
 		}
 	}
 	return (k2);
 }
 
-char* ft_degr5(int k)
+char*   ft_degr5(int k)
 {
 	static char *d[60] = {"5", "25", "125","625", "3125", "15625","78125", "390625", "1953125",
 					   "9765625", "48828125", "244140625", "1220703125", "6103515625","30517578125",
@@ -98,24 +105,30 @@ char* ft_degr5(int k)
 			"867361737988403547205962240695953369140625"};
 	
 	char *k2;
-	
+	char *s;
 	k2 = "";
+	
 	while (k > 0)
 	{
 		if (k < 60)
 		{
 			if (!k2[0])
-				return (d[k - 1]);
-			return (ft_multi(d[k - 1], k2));
+				return (ft_strdup(d[k - 1]));
+			s = k2;
+			k2 = ft_multi(d[k - 1], s);
+			ft_strdel(&s);
+			return (k2);
 		}
 		if (k >= 60 && !k2[0])
 		{
-			k2 = d[59];
+			k2 = ft_strdup(d[59]);
 			k -= 60;
 		}
 		else if (k >= 60 && k2[0])
 		{
+			s = k2;
 			k2 = ft_multi(d[59], k2);
+			ft_strdel(&s);
 			k -= 60;
 		}
 	}
@@ -125,15 +138,21 @@ char* ft_degr5(int k)
 char *revers_s(int *s , long long int i)
 {
 	char *s2;
+	char *w;
 	int j;
 	
-	s2 = (char*)malloc(i + 1);
+	if (!s || !(s2 = (char*)malloc(i + 1)))
+		return (NULL);
 	s2[i] = 0;
 	j = 0;
 	while (--i >= 0)
 		s2[j++] = s[i] + 48;
 	if (s2[0] == '0')
-		s2++;
+	{
+		w = s2;
+		s2 = ft_strdup(s2 + 1);
+		ft_strdel(&w);
+	}
 	return (s2);
 	
 }
@@ -142,7 +161,7 @@ char* ft_multi(char *wer1, char* wer)// 1 и  2 число длина котор
 {
 	int d;
 	int r;
-	int *C;
+	int C[999999] = {0};
 	int i;
 	int k;
 	int j;
@@ -152,7 +171,6 @@ char* ft_multi(char *wer1, char* wer)// 1 и  2 число длина котор
 		return (0);
 	d = ft_strlen(wer);
 	r = ft_strlen(wer1);// длина А и В
-	C = (int *) malloc(sizeof(int) * 99999);// создаем массив в котором будем хранить результат
 	i = d - 1;
 	k = 1;
 	while (i > -1)// запускаем цикл, в котором умножаем короткое число

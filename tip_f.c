@@ -34,10 +34,10 @@ int    obr_width_f(il *kok, char **v, int p, char c)
 	{
 		if (!(*v)[len] && p == 2 && !ft_strchr(*v, '.'))
 			buf[0] = '.';
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 	}
 	else
-		*v = ft_strjoin(buf, *v);
+		*v = ft_strjoin3(buf, *v);
 	return (1);
 }
 
@@ -47,7 +47,7 @@ void obr_point_f(il *kok, char **v)
 	int p;
 	
 	p = ft_strlen2(*v , '.');
-	len = ft_strlen(*v + p) - 1 ;
+	len = (int)ft_strlen(*v + p) - 1 ;
 	kok->point = kok->point == -1 ? 6 : kok->point;
 	if (len < kok->point && kok->point != 0)//если меньше нормы, то дакидывем нулей
 	{
@@ -101,9 +101,9 @@ void okr2(char **s, int l, int d)
 	}
 	(*s)[l - 1] += d;
 	if ((*s)[0] == ':' && d)
-		*s = ft_strjoin("10", *s + 1 );
+		*s = ft_strjoin2("10", *s + 1 );
 	else if ((*s)[1] == ':' && d)
-		*s = ft_strjoin("-10", *s + 2 );
+		*s = ft_strjoin2("-10", *s + 2 );
 }
 
 int onlit(char *s,  char c)
@@ -132,31 +132,33 @@ void okrug(il *kok, char **s)
 		if (!onlit(*s, '0'))
 			okr2(s, p, 5);
 	}
-	
 }
+
 char* inf(il *kok, ilia ili)
 {
 	char *man;
 	
 	man = NULL;
 	if (ili.m == 9223372036854775808 && ili.e[4] == 32767)
-		man = "inf";
+		man = ft_strdup("inf");
 	if (ili.m == 9223372036854775808 && ili.e[4] == -1)
-		man = "-inf";
+		man = ft_strdup("-inf");
 	if (ili.f != ili.f)
-		man = "nan";
+		man = ft_strdup("nan");
 	if (man)
 	{
-		kok->str[0] = 1;
+		kok->resh = 1;
 		man = mop_s_c(kok, man);
 		ft_putstr(man);
 	}
 	return (man);
 }
+
 char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 16383
 {
 	ilia ili;
 	int z;
+	char *s;
 	char *tail;
 	char *man;
 	
@@ -176,13 +178,19 @@ char* table_f(il *kok, va_list ar) //округление // m  = 1 , e = 3 1638
 	ili.e[4] -= 16383 + 63;
 	man = ft_itoa2(ili.m);
 	if (man[0] == '-')
-		man++;
+	{
+		s = man;
+		man = ft_strdup(man + 1);
+		ft_strdel(&s);
+	}
 	if (ili.e[4] > 0)
-		tail = ft_multi(man, ft_degr2(ili.e[4]));
+		tail = ft_multi(man, s = ft_degr2(ili.e[4]));
 	else
-		tail = del10(ft_multi(man, ft_degr5(ili.e[4] * -1)), ili.e[4] * -1);
+		tail = del10(ft_multi(man, s = ft_degr5(ili.e[4] * -1)), ili.e[4] * -1);
 	okrug(kok, &tail);
 	if (--man[0] == '-' || z == -1)
 		tail = ft_strjoin("-", tail);
+	ft_strdel(&man);
+	ft_strdel(&s);
 	return (mop_f(kok, tail));
 }

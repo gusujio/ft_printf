@@ -23,7 +23,7 @@ SRC = ./libft/ft_atoi.c         ./libft/ft_itoa.c       ./libft/ft_memset.c\
         ./libft/ft_tolower.c    ./libft/ft_unletter.c   ./libft/ft_toupper.c\
         ./libft/ft_strjoin1.c   ./libft/ft_strjoin2.c   ./libft/ft_strjoin3.c\
         ./libft/ft_strlen3.c    ./libft/ft_lenint.c     ./libft/ft_itoa2.c\
-        ./libft/ft_lenint2.c\
+        ./libft/ft_lenint2.c    ./libft/ft_strdel.c     ./libft/ft_memdel.c\
         bonus.c                 tip_f.c                 tip_i_d.c\
         tip_o.c                 tip_p.c                 tip_s_c.c\
         tip_u.c                 tip_x_X.c               ft_multi.c
@@ -38,7 +38,7 @@ OBJ =	ft_atoi.o		ft_itoa.o	    ft_memset.o		ft_putchar.o\
 		ft_degree.o     ft_multi.o      ft_tolower.o    ft_unletter.o\
 		ft_isalpha.o    ft_toupper.o    bonus.o         ft_strjoin1.o\
 		ft_strjoin2.o   ft_strjoin3.o   ft_strlen3.o    ft_lenint.o\
-		ft_itoa2.o      ft_lenint2.o
+		ft_itoa2.o      ft_lenint2.o    ft_strdel.o     ft_memdel.o
 
 all: $(NAME)
 

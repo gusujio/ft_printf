@@ -26,9 +26,9 @@ int    obr_width_p(il *kok, char **v, int param, char c)
     ft_memset(buf, c, l);
 	obr_sistem(v,&buf,c);
 	if (kok->mines && param != kok->point)
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 	else
-		*v = ft_strjoin(buf, *v);
+		*v = ft_strjoin3(buf, *v);
     return (1);
 }
 
@@ -38,7 +38,7 @@ void obr_point_p(il *kok, char **v)
         (*v)[ft_strlen(*v) - 1] = 0;
     else if (!kok->point && !kok->v_i) // ноль игнорируется
     {
-        *v = "";
+        *v = ft_strdup("");
         return;
     }
     obr_width_p(kok, v, kok->point, '0');
@@ -52,10 +52,10 @@ char* table_p(il *kok, va_list ar)
 	if ((v1 = flag_sign(kok, ar)) == (void *)-2)
         v1 = (void *) va_arg(ar, unsigned long int);
 	kok->v_i = v1;
-    v =  perevod(v1, 'x');
+    v = perevod(v1, 'x');
 	obr_resh(kok, &v);
 	obr_point_p(kok, &v);
-	v = ft_strjoin("0x", v);
+	v = ft_strjoin2("0x", v);
 	obr_width_p(kok, &v, kok->width, space_or_zero(kok));
 	ft_putstr(v);
 	return (v);

@@ -15,6 +15,7 @@
 int    obr_width_x_X(il *kok, char **v, int p, char c)
 {
 	char *buf;
+	char *v2;
 	int l;
 	int k;
 	int param;
@@ -31,13 +32,15 @@ int    obr_width_x_X(il *kok, char **v, int p, char c)
 	obr_sistem(v,&buf,c);
 	if (kok->resh && c != ' ' && l)
 	{
-		*v = ft_strjoin(buf, *v + 2);
+		v2 = *v;
+		*v = ft_strjoin1(buf, *v + 2);
+		ft_strdel(&v2);
 		obr_resh(kok, v);
 	}
 	else if (kok->mines && param != kok->point)
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 	else
-		*v = ft_strjoin(buf, *v);
+		*v = ft_strjoin3(buf, *v);
 	return (1);
 }
 
@@ -49,7 +52,7 @@ char* table_x_X(il *kok, va_list ar)
 	if ((v1 = flag_unsign(kok, ar)) == (void *)-2)
 		v1 = (void *) va_arg(ar, unsigned int);
 	kok->v_i = v1;
-	v =  perevod(v1, kok->type);
+	v = perevod(v1, kok->type);
 	obr_resh(kok, &v);
 	obr_point_i_d(kok, &v);
 	obr_width_x_X(kok, &v, 1, space_or_zero(kok));

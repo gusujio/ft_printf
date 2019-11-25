@@ -31,9 +31,9 @@ int    obr_width_i_d(il *kok, char **v,int p, char c)
 	if (l && k <= param)
 		obr_sistem(v,&buf,c);
 	if (kok->mines && param != kok->point)
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 	else
-		*v = ft_strjoin(buf, *v);
+		*v = ft_strjoin3(buf, *v);
 	return (1);
 }
 
@@ -42,7 +42,10 @@ void obr_point_i_d(il *kok, char **v)
 	if (kok->point < 0)
 		return;
 	if (!kok->point && !kok->v_i)
-		*v = "";
+	{
+		ft_strdel(v);
+		*v = ft_strdup("");
+	}
 	else
 	{
 		if (kok->type == 'X' || kok->type == 'x')
@@ -63,7 +66,7 @@ char* table_i_d(il *kok, va_list ar)
 	v = ft_itoa(v1);
 	obr_point_i_d(kok, &v);
 	if (kok->plus && v[0] != '-')
-		v = ft_strjoin("+", v);
+		v = ft_strjoin2("+", v);
 	obr_space(kok, &v);
 	obr_width_i_d(kok, &v, 1, space_or_zero(kok));
 	ft_putstr(v);

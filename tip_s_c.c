@@ -17,7 +17,7 @@ int    obr_width_s_c(il *kok, char **v, int param, char c)
 	char *buf;
 	int l;
 	
-	l = (int)param - ft_strlen(*v);
+	l = param - (int) ft_strlen(*v);
 	l = l > 0 ? l : 0;
 	ft_strchr(*v, '-') && kok->point && c != ' ' && l ? l++ : l;
 	buf = (char *) malloc(l + 1);
@@ -25,11 +25,11 @@ int    obr_width_s_c(il *kok, char **v, int param, char c)
 	ft_memset(buf, c, l);
 	if (kok->mines)
 	{
-		*v = ft_strjoin(*v, buf);
+		*v = ft_strjoin3(*v, buf);
 		return (1);
 	}
-	obr_sistem(v,&buf,c);
-	*v = ft_strjoin(buf, *v);
+	obr_sistem(v, &buf, c);
+	*v = ft_strjoin3(buf, *v);
 	return (1);
 }
 
@@ -38,7 +38,7 @@ char * mop_s_c(il *kok, char *v)
 	if (kok->type == 'f')
 	{
 		if (kok->plus && v[0] != '-' && ft_strcmp(v, "nan"))
-			v = ft_strjoin("+", v);
+			v = ft_strjoin2("+", v);
 		obr_space(kok, &v);
 	}
 	if (ft_strlen(v) >= kok->point && kok->type == 's')
@@ -55,7 +55,7 @@ char *obr_char(il *kok, va_list ar)
 
 	s2 = ft_memset(ft_strnew(2), va_arg(ar, int), 1);
 	k = s2[0];
-	s2 = mop_s_c(kok, s2[0] ? s2 : "~");
+	s2 = mop_s_c(kok, s2[0] ? s2 : ft_strdup("~"));
 	i = 0;
 	while (s2[i] != 0)
 	{
@@ -72,7 +72,7 @@ char* table_s_c(il *kok, va_list ar)
 {
 	char *v;
 	if (kok->type == '%')
-		v = mop_s_c(kok, "%");
+		v = mop_s_c(kok, ft_strdup("%"));
 	else if ((v = va_arg(ar, char*)) || !v)
 		v = mop_s_c(kok, ft_strdup(v ? v : "(null)"));
 	ft_putstr(v);

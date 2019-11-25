@@ -14,7 +14,7 @@ void print_m_c_z(char **c, int i, int j)
 			ft_putchar(c[x][y]);
 			y++;
 		}
-		ft_printf("\n");
+		ft_putchar("\n");
 		x++;
 	}
 }
@@ -32,7 +32,7 @@ void print_m_c(char **c)
 			ft_putchar(c[x][y]);
 			y++;
 		}
-		ft_printf("\n");
+		ft_putchar("\n");
 		x++;
 	}
 }
@@ -50,7 +50,7 @@ void print_m_i(int **c, int i, int j)
 			ft_printf("%d ", c[x][y]);
 			y++;
 		}
-		ft_printf("\n");
+		ft_putchar("\n");
 		x++;
 	}
 }
@@ -64,17 +64,20 @@ void table_m(il *kok, va_list ar)
 		print_m_i(va_arg(ar, int**), kok->width, kok->point);
 }
 
-void ft_bit(unsigned char c)
+char *ft_bit(unsigned char c)
 {
 	int k;
 	int i;
 	
+	if (!c)
+		c = 0;
 	i = 0;
 	k = 128;
 	while (i < 8)
 	{
-		printf("%d", !!(c & k));
+		ft_printf("%d", !!(c & k));
 		k = k >> 1;
 		i++;
 	}
+	return (ft_strdup(""));
 }
