@@ -1,22 +1,33 @@
-#include "ft_printf.h"
-#define ui_pos_1
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/25 17:54:08 by gusujio           #+#    #+#             */
+/*   Updated: 2019/11/25 18:04:15 by gusujio          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char *ft_strdup2(char *s)
+#include "ft_printf.h"
+
+char	*ft_strdup2(char *s)
 {
-	char *s2;
-	
+	char	*s2;
+
 	s2 = ft_strdup(s);
 	ft_strdel(&s);
 	return (s2);
 }
 
-char *perevod(long long int x, char c) // из деситичную в указанную
+char	*perevod(long long int x, char c)
 {
-	unsigned long long int osn;
-	unsigned long long int ost;
-	unsigned long long int size;
-	char *s;
-	
+	unsigned long long int	osn;
+	unsigned long long int	ost;
+	unsigned long long int	size;
+	char					*s;
+
 	osn = c == 'o' ? 8 : c == 'x' || c == 'X' ? 16 : 2;
 	ost = x;
 	size = 1;
@@ -25,7 +36,7 @@ char *perevod(long long int x, char c) // из деситичную в указ�
 		ost /= osn;
 		size++;
 	}
-	s = (char *) malloc(size + 1);
+	s = (char *)malloc(size + 1);
 	s[size] = 0;
 	while (size-- > 0)
 	{
@@ -38,16 +49,16 @@ char *perevod(long long int x, char c) // из деситичную в указ�
 	return (s);
 }
 
-void obr_resh(il *kok, char **v)
+void	obr_resh(il *kok, char **v)
 {
 	if (!kok->resh)
-		return;
+		return ;
 	if (kok->type == 'p')
 		*v = ft_strjoin2("0x", *v);
 	if ((*v)[0] == '0' && !kok->v_i && kok->point)
 	{
 		kok->resh = 0;
-		return;
+		return ;
 	}
 	if (kok->type == 'x')
 		*v = ft_strjoin2("0x", *v);
@@ -57,14 +68,15 @@ void obr_resh(il *kok, char **v)
 		*v = ft_strjoin2("0", *v);
 }
 
-void obr_space(il *kok, char **v)
+void	obr_space(il *kok, char **v)
 {
 	if (!kok->space)
-		return;
+		return ;
 	if ((*v)[0] != '-' && (*v)[0] != '+' && ft_strcmp(*v, "nan"))
 		*v = ft_strjoin2(" ", *v);
 }
-void obr_sistem(char **v,char **buf, char c)
+
+void	obr_sistem(char **v, char **buf, char c)
 {
 	if (((*v)[0] == '-' || (*v)[0] == '+' || (*v)[0] == ' ') && c == '0')
 	{
@@ -73,48 +85,48 @@ void obr_sistem(char **v,char **buf, char c)
 	}
 }
 
-void * flag_sign(il *kok, va_list ar)
+void	*flag_sign(il *kok, va_list ar)
 {
 	void *error;
-	
+
 	error = (void *)-2;
 	if (kok->speth)
 	{
 		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
-			return ((void *) va_arg(ar, signed char));
+			return ((void *)va_arg(ar, signed char));
 		else if (kok->speth[0] == 'h')
-			return ((void *) va_arg(ar, short int));
+			return ((void *)va_arg(ar, short int));
 		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
-			return ((void *) va_arg(ar, long long int));
+			return ((void *)va_arg(ar, long long int));
 		else if (kok->speth[0] == 'l')
-			return ((void *) va_arg(ar, long int));
+			return ((void *)va_arg(ar, long int));
 	}
 	return (error);
 }
 
-void *flag_unsign(il *kok, va_list ar)
+void	*flag_unsign(il *kok, va_list ar)
 {
-	void *error;
-	
+	void	*error;
+
 	error = (void *)-2;
 	if (kok->speth)
 	{
 		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
-			return ((void *) va_arg(ar, unsigned char));
+			return ((void *)va_arg(ar, unsigned char));
 		else if (kok->speth[0] == 'h')
-			return ((void *) va_arg(ar, unsigned short int));
+			return ((void *)va_arg(ar, unsigned short int));
 		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
-			return ((void *) va_arg(ar, unsigned long long int));
+			return ((void *)va_arg(ar, unsigned long long int));
 		else if (kok->speth[0] == 'l')
-			return ((void *) va_arg(ar, unsigned long int));
+			return ((void *)va_arg(ar, unsigned long int));
 	}
 	return (error);
 }
 
-char space_or_zero(il *kok)
+char	space_or_zero(il *kok)
 {
 	int y;
-	
+
 	y = kok->type != 'f' ? 1 : kok->resh != 1;
 	if (kok->type == 'f' && !kok->mines && kok->zero && y)
 		return ('0');
@@ -125,16 +137,16 @@ char space_or_zero(il *kok)
 	return (' ');
 }
 
-char* table(va_list ar, il *kok)
+char	*table(va_list ar, il *kok)
 {
 	if (kok->type == 'c')
 		return (obr_char(kok, ar));
-	else if (kok->type == 's' || kok->type== '%')
+	else if (kok->type == 's' || kok->type == '%')
 		return (table_s_c(kok, ar));
 	else if (kok->type == 'd' || kok->type == 'i')
 		return (table_i_d(kok, ar));
 	else if (kok->type == 'x' || kok->type == 'X')
-		return (table_x_X(kok, ar));
+		return (table_x(kok, ar));
 	else if (kok->type == 'o')
 		return (table_o(kok, ar));
 	else if (kok->type == 'u')
@@ -151,11 +163,11 @@ char* table(va_list ar, il *kok)
 		return (ft_strdup(""));
 }
 
-void obr_struct(il **kok, char *s)
+void	obr_struct(il **kok, char *s)
 {
-	char *k;
-	int i;
-	
+	char	*k;
+	int		i;
+
 	i = 0;
 	(*kok)->str = s;
 	while (s[i] && s[i] < '1' && s[i] != '.')
@@ -189,12 +201,12 @@ void obr_struct(il **kok, char *s)
 	(*kok)->type = s[ft_strlen(s) - 1];
 }
 
-char* obr_zv(const char *s0, va_list ar, int *len)
+char	*obr_zv(const char *s0, va_list ar, int *len)
 {
-	int i;
-	char *s2;
-	char *s;
-	
+	int		i;
+	char	*s2;
+	char	*s;
+
 	*len += (i = ft_strlen3(s0, "cspdioufxmX%")) + 1;
 	s = ft_strdup(s0);
 	if (s[i] == 'D' || s[i] == 'C' || s[i] == 'F' || s[i] == 'S' || s[i] == 'P')
@@ -223,7 +235,8 @@ char* obr_zv(const char *s0, va_list ar, int *len)
 	}
 	return (s2);
 }
-void delst(il *kok, char *s)
+
+void	delst(il *kok, char *s)
 {
 	ft_strdel(&kok->speth);
 	ft_strdel(&kok->str);
@@ -231,14 +244,15 @@ void delst(il *kok, char *s)
 	ft_bzero(kok, sizeof(il));
 }
 
-int ft_printf(const char *restrict format, ...)
+int		ft_printf(const char *restrict format, ...)
 {
-	va_list ar;
-	int i ;
-	int len;
-	char *s;
-	
-	il *kok = malloc(sizeof(il));
+	va_list	ar;
+	int		i;
+	int		len;
+	char	*s;
+	il		*kok;
+
+	kok = malloc(sizeof(il));
 	ft_bzero(kok, sizeof(il));
 	i = -1;
 	len = 0;
@@ -262,17 +276,3 @@ int ft_printf(const char *restrict format, ...)
 	va_end(ar);
 	return (len);
 }
-
-//2660
-//5
-#include <float.h>
-#include <stdio.h>
-#include <math.h>
-
-/*
-int main()//("%.2000f", DBL_MIN) ("%.0f", DBL_MAX)
-{
-	printf(" =%d\n" , printf("{%*3d}", 5, 0));
-	printf(" =%d\n" , ft_printf("{%*3d}", 5, 0));
-}
-*/

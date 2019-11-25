@@ -6,21 +6,21 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 17:05:21 by gusujio           #+#    #+#             */
-/*   Updated: 2019/10/28 17:05:24 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/25 17:36:25 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int    obr_width_s_c(il *kok, char **v, int param, char c)
+int		obr_width_s_c(il *kok, char **v, int param, char c)
 {
-	char *buf;
-	int l;
-	
-	l = param - (int) ft_strlen(*v);
+	char	*buf;
+	int		l;
+
+	l = param - (int)ft_strlen(*v);
 	l = l > 0 ? l : 0;
 	ft_strchr(*v, '-') && kok->point && c != ' ' && l ? l++ : l;
-	buf = (char *) malloc(l + 1);
+	buf = (char *)malloc(l + 1);
 	buf[l] = 0;
 	ft_memset(buf, c, l);
 	if (kok->mines)
@@ -33,7 +33,7 @@ int    obr_width_s_c(il *kok, char **v, int param, char c)
 	return (1);
 }
 
-char * mop_s_c(il *kok, char *v)
+char	*mop_s_c(il *kok, char *v)
 {
 	if (kok->type == 'f')
 	{
@@ -47,11 +47,11 @@ char * mop_s_c(il *kok, char *v)
 	return (v);
 }
 
-char *obr_char(il *kok, va_list ar)
+char	*obr_char(il *kok, va_list ar)
 {
-	int k;
-	char *s2;
-	int i;
+	int		k;
+	char	*s2;
+	int		i;
 
 	s2 = ft_memset(ft_strnew(2), va_arg(ar, int), 1);
 	k = s2[0];
@@ -68,9 +68,10 @@ char *obr_char(il *kok, va_list ar)
 	return (s2);
 }
 
-char* table_s_c(il *kok, va_list ar)
+char	*table_s_c(il *kok, va_list ar)
 {
 	char *v;
+
 	if (kok->type == '%')
 		v = mop_s_c(kok, ft_strdup("%"));
 	else if ((v = va_arg(ar, char*)) || !v)

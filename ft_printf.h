@@ -43,6 +43,14 @@ typedef struct  ilia
 	void        *v_i;
 	long double   v_f;
 }               il;
+
+typedef union			types
+{
+	long double			f;
+	unsigned long long	m;
+	short int			e[5];
+}						ilia;
+
 char            *ft_strdup2(char *s);
 char            *del10(char *s, int k);
 char            *ft_degr5(int k);
@@ -72,6 +80,13 @@ int             obr_width_f(il *kok, char **v, int i, char c);
 void            obr_point_f(il *kok, char **v);
 char            *mop_f(il *kok, char *v);
 char            *table_f(il *kok, va_list ar);
+char	*obr_f(ilia ili, char *man, int z, il *kok);
+char	*inf(il *kok, ilia ili);
+void	okrug(il *kok, char **s);
+int		onlit(char *s, char c);
+void	okr2(char **s, int l, int d);
+char	*mop_f(il *kok, char *v);
+void	obr_point_f(il *kok, char **v);
 
 int             obr_width_i_d(il *kok, char **v,int param, char c);
 void            obr_point_i_d(il *kok, char **v);
@@ -98,9 +113,9 @@ void            obr_point_u(il *kok, char **v);
 char            *mop_u(il *kok, char *v);
 char            *table_u(il *kok, va_list ar);
 
-int             obr_width_x_X(il *kok, char **v, int param, char c);
-void            obr_point_x_X(il *kok, char **v);
-char            *mop_x_X(il *kok, char *v);
-char            *table_x_X(il *kok, va_list ar);
+void		    obr_width_x(il *kok, char **v, int p, char c);
+void            obr_point_x(il *kok, char **v);
+char            *mop_x(il *kok, char *v);
+char            *table_x(il *kok, va_list ar);
 
 #endif

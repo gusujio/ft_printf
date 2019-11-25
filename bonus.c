@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bonus.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/25 17:42:49 by gusujio           #+#    #+#             */
+/*   Updated: 2019/11/25 17:42:51 by gusujio          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-void print_m_c_z(char **c, int i, int j)
+void	print_m_c_z(char **c, int i, int j)
 {
 	int x;
 	int y;
-	
+
 	x = 0;
 	while (x < i && c[x])
 	{
@@ -18,11 +30,12 @@ void print_m_c_z(char **c, int i, int j)
 		x++;
 	}
 }
-void print_m_c(char **c)
+
+void	print_m_c(char **c)
 {
 	int x;
 	int y;
-	
+
 	x = 0;
 	while (c[x])
 	{
@@ -36,11 +49,12 @@ void print_m_c(char **c)
 		x++;
 	}
 }
-void print_m_i(int **c, int i, int j)
+
+void	print_m_i(int **c, int i, int j)
 {
 	int x;
 	int y;
-	
+
 	x = 0;
 	while (x < i)
 	{
@@ -54,7 +68,8 @@ void print_m_i(int **c, int i, int j)
 		x++;
 	}
 }
-void table_m(il *kok, va_list ar)
+
+void	table_m(il *kok, va_list ar)
 {
 	if (kok->mines && kok->point == -1)
 		print_m_c(va_arg(ar, char**));
@@ -64,11 +79,11 @@ void table_m(il *kok, va_list ar)
 		print_m_i(va_arg(ar, int**), kok->width, kok->point);
 }
 
-char *ft_bit(unsigned char c)
+char	*ft_bit(unsigned char c)
 {
 	int k;
 	int i;
-	
+
 	if (!c)
 		c = 0;
 	i = 0;
