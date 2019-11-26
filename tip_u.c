@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-char	*mop_u(il *kok, char *v)
+char	*mop_u(t_il *kok, char *v)
 {
 	obr_point_i_d(kok, &v);
 	obr_width_i_d(kok, &v, 1, space_or_zero(kok));
@@ -20,7 +20,7 @@ char	*mop_u(il *kok, char *v)
 	return (v);
 }
 
-char	*table_u(il *kok, va_list ar)
+char	*table_u(t_il *kok, va_list ar)
 {
 	void	*v;
 

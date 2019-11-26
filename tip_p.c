@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int		obr_width_p(il *kok, char **v, int param, char c)
+int		obr_width_p(t_il *kok, char **v, int param, char c)
 {
 	char	*buf;
 	int		l;
@@ -32,7 +32,7 @@ int		obr_width_p(il *kok, char **v, int param, char c)
 	return (1);
 }
 
-void	obr_point_p(il *kok, char **v)
+void	obr_point_p(t_il *kok, char **v)
 {
 	if (!kok->point)
 		(*v)[ft_strlen(*v) - 1] = 0;
@@ -44,7 +44,7 @@ void	obr_point_p(il *kok, char **v)
 	obr_width_p(kok, v, kok->point, '0');
 }
 
-char	*table_p(il *kok, va_list ar)
+char	*table_p(t_il *kok, va_list ar)
 {
 	void	*v1;
 	char	*v;

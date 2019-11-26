@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int		obr_width_f(il *kok, char **v, int p, char c)
+int		obr_width_f(t_il *kok, char **v, int p, char c)
 {
 	char	*buf;
 	int		l;
@@ -41,7 +41,7 @@ int		obr_width_f(il *kok, char **v, int p, char c)
 	return (1);
 }
 
-void	obr_point_f(il *kok, char **v)
+void	obr_point_f(t_il *kok, char **v)
 {
 	int len;
 	int p;
@@ -67,7 +67,7 @@ void	obr_point_f(il *kok, char **v)
 	}
 }
 
-char	*mop_f(il *kok, char *v)
+char	*mop_f(t_il *kok, char *v)
 {
 	if (kok->plus && v[0] != '-')
 		v = ft_strjoin("+", v);

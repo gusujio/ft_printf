@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int		obr_width_s_c(il *kok, char **v, int param, char c)
+int		obr_width_s_c(t_il *kok, char **v, int param, char c)
 {
 	char	*buf;
 	int		l;
@@ -33,7 +33,7 @@ int		obr_width_s_c(il *kok, char **v, int param, char c)
 	return (1);
 }
 
-char	*mop_s_c(il *kok, char *v)
+char	*mop_s_c(t_il *kok, char *v)
 {
 	if (kok->type == 'f')
 	{
@@ -47,7 +47,7 @@ char	*mop_s_c(il *kok, char *v)
 	return (v);
 }
 
-char	*obr_char(il *kok, va_list ar)
+char	*obr_char(t_il *kok, va_list ar)
 {
 	int		k;
 	char	*s2;
@@ -68,7 +68,7 @@ char	*obr_char(il *kok, va_list ar)
 	return (s2);
 }
 
-char	*table_s_c(il *kok, va_list ar)
+char	*table_s_c(t_il *kok, va_list ar)
 {
 	char *v;
 

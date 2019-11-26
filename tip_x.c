@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	obr_width_x(il *kok, char **v, int p, char c)
+void	obr_width_x(t_il *kok, char **v, int p, char c)
 {
 	char	*buf;
 	char	*v2;
@@ -41,7 +41,7 @@ void	obr_width_x(il *kok, char **v, int p, char c)
 	ft_strjoin3(*v, buf) : ft_strjoin3(buf, *v);
 }
 
-char	*table_x(il *kok, va_list ar)
+char	*table_x(t_il *kok, va_list ar)
 {
 	void	*v1;
 	char	*v;

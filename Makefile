@@ -6,7 +6,7 @@
 #    By: gusujio <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/22 14:43:32 by gusujio           #+#    #+#              #
-#    Updated: 2019/11/10 21:47:46 by gusujio          ###   ########.fr        #
+#    Updated: 2019/11/26 12:42:39 by gusujio          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,9 @@ SRC = ./libft/ft_atoi.c         ./libft/ft_itoa.c       ./libft/ft_memset.c\
         ./libft/ft_lenint2.c    ./libft/ft_strdel.c     ./libft/ft_memdel.c\
         bonus.c                 tip_f.c                 tip_i_d.c\
         tip_o.c                 tip_p.c                 tip_s_c.c\
-        tip_u.c                 tip_x.c               ft_multi.c\
-        tip_ff.c                ft_mult2.c
+        tip_u.c                 tip_x.c                 ft_multi.c\
+        tip_ff.c                ft_mult2.c              obr.c\
+        obr2.c                  obr3.c
 
 OBJ =	ft_atoi.o		ft_itoa.o	    ft_memset.o		ft_putchar.o\
 		ft_putstr.o		ft_strcmp.o	    ft_strjoin.o	ft_strlen.o\
@@ -40,7 +41,8 @@ OBJ =	ft_atoi.o		ft_itoa.o	    ft_memset.o		ft_putchar.o\
 		ft_isalpha.o    ft_toupper.o    bonus.o         ft_strjoin1.o\
 		ft_strjoin2.o   ft_strjoin3.o   ft_strlen3.o    ft_lenint.o\
 		ft_itoa2.o      ft_lenint2.o    ft_strdel.o     ft_memdel.o\
-		tip_ff.o        ft_mult2.o
+		tip_ff.o        ft_mult2.o      obr.o           obr2.o\
+		obr3.o
 
 all: $(NAME)
 

@@ -6,13 +6,13 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 12:35:03 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/25 22:37:33 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/26 15:47:02 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char *d[60] =
+char *g_d[60] =
 {
 	"5",
 	"25",
@@ -76,7 +76,7 @@ char *d[60] =
 	"867361737988403547205962240695953369140625"
 };
 
-char *dd[60] =
+char *g_dd[60] =
 {
 	"2",
 	"4",
@@ -140,12 +140,12 @@ char *dd[60] =
 	"1152921504606846976"
 };
 
-void	zevs(char **k2, char **m)
+void	zevs(char **k2, char **m, int k)
 {
 	char *s;
 
 	s = *k2;
-	*k2 = ft_multi(m[59], *k2);
+	*k2 = ft_multi(m[k], *k2);
 	ft_strdel(&s);
 }
 
@@ -155,19 +155,19 @@ char	*ft_degr(int k, int i)
 	char	**m;
 
 	k2 = "";
-	m = i == 2 ? dd : d;
+	m = i == 2 ? g_dd : g_d;
 	while (k > 0)
 	{
 		if (k < 60)
 		{
 			if (!k2[0])
 				return (ft_strdup(m[k - 1]));
-			zevs(&k2, m);
+			zevs(&k2, m, k - 1);
 		}
 		else if (k >= 60 && !k2[0])
 			k2 = ft_strdup(m[59]);
 		else if (k >= 60 && k2[0])
-			zevs(&k2, m);
+			zevs(&k2, m, 59);
 		k -= 60;
 	}
 	return (k2);

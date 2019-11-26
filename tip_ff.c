@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	okrug(il *kok, char **s)
+void	okrug(t_il *kok, char **s)
 {
 	int p;
 
@@ -29,7 +29,7 @@ void	okrug(il *kok, char **s)
 	}
 }
 
-char	*inf(il *kok, ilia ili)
+char	*inf(t_il *kok, t_ailia ili)
 {
 	char	*man;
 
@@ -49,7 +49,7 @@ char	*inf(il *kok, ilia ili)
 	return (man);
 }
 
-char	*obr_f(ilia ili, char *man, int z, il *kok)
+char	*obr_f(t_ailia ili, char *man, int z, t_il *kok)
 {
 	char	*tail;
 	char	*s;
@@ -78,9 +78,9 @@ char	*obr_f(ilia ili, char *man, int z, il *kok)
 	return (mop_f(kok, tail));
 }
 
-char	*table_f(il *kok, va_list ar)
+char	*table_f(t_il *kok, va_list ar)
 {
-	ilia	ili;
+	t_ailia	ili;
 	int		z;
 	char	*man;
 
@@ -98,6 +98,5 @@ char	*table_f(il *kok, va_list ar)
 	z = ili.e[4] >> 15;
 	ili.e[4] = ili.e[4] & 0x7fff;
 	ili.e[4] -= 16383 + 63;
-	man = ft_itoa2(ili.m);
-	return (obr_f(ili, man, z, kok));
+	return (obr_f(ili, ft_itoa2(ili.m), z, kok));
 }

@@ -69,7 +69,7 @@ void	print_m_i(int **c, int i, int j)
 	}
 }
 
-void	table_m(il *kok, va_list ar)
+void	table_m(t_il *kok, va_list ar)
 {
 	if (kok->mines && kok->point == -1)
 		print_m_c(va_arg(ar, char**));
