@@ -34,9 +34,9 @@ char	*inf(t_il *kok, t_ailia ili)
 	char	*man;
 
 	man = NULL;
-	if (ili.m == 9223372036854775808 && ili.e[4] == 32767)
+	if (ili.m == 0x8000000000000000 && ili.e[4] == 32767)
 		man = ft_strdup("inf");
-	if (ili.m == 9223372036854775808 && ili.e[4] == -1)
+	if (ili.m == 0x8000000000000000 && ili.e[4] == -1)
 		man = ft_strdup("-inf");
 	if (ili.f != ili.f)
 		man = ft_strdup("nan");
@@ -80,15 +80,15 @@ char	*obr_f(t_ailia ili, char *man, int z, t_il *kok)
 
 char	*table_f(t_il *kok, va_list ar)
 {
-	t_ailia	ili;
-	int		z;
-	char	*man;
+	t_ailia     ili;
+	int		    z;
+	char        *man;
 
 	if (kok->speth)
 	{
 		if (kok->speth[0] == 'L')
 			ili.f = va_arg(ar, long double);
-		if (kok->speth[0] == 'l')
+		else
 			ili.f = va_arg(ar, double);
 	}
 	else

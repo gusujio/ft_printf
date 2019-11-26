@@ -22,9 +22,9 @@ char	*mop_u(t_il *kok, char *v)
 
 char	*table_u(t_il *kok, va_list ar)
 {
-	void	*v;
+	unsigned long long int	v;
 
-	if ((v = flag_unsign(kok, ar)) == (void *)-2)
-		v = (void *)va_arg(ar, unsigned int);
-	return (mop_u(kok, ft_itoa2(v)));
+	if ((int)(v = flag_unsign(kok, ar)) == -2)
+		v = va_arg(ar, unsigned int);
+	return (mop_u(kok, ft_itoa2((unsigned long long int)v)));
 }

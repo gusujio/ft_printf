@@ -21,42 +21,36 @@ char	*ft_strdup2(char *s)
 	return (s2);
 }
 
-void	*flag_sign(t_il *kok, va_list ar)
+long long int flag_sign(t_il *kok, va_list ar)
 {
-	void *error;
-
-	error = (void *)-2;
 	if (kok->speth)
 	{
 		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
-			return ((void *)va_arg(ar, signed char));
+			return ((signed char)va_arg(ar, int));
 		else if (kok->speth[0] == 'h')
-			return ((void *)va_arg(ar, short int));
+			return ((short int)va_arg(ar, int));
 		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
-			return ((void *)va_arg(ar, long long int));
+			return (va_arg(ar, long long int));
 		else if (kok->speth[0] == 'l')
-			return ((void *)va_arg(ar, long int));
+			return (va_arg(ar, long int));
 	}
-	return (error);
+	return (-2);
 }
 
-void	*flag_unsign(t_il *kok, va_list ar)
+unsigned long long int	flag_unsign(t_il *kok, va_list ar)
 {
-	void	*error;
-
-	error = (void *)-2;
 	if (kok->speth)
 	{
 		if (kok->speth[0] == 'h' && kok->speth[1] == 'h')
-			return ((void *)va_arg(ar, unsigned char));
+			return ((unsigned char)va_arg(ar, int));
 		else if (kok->speth[0] == 'h')
-			return ((void *)va_arg(ar, unsigned short int));
+			return ((unsigned short int)va_arg(ar, int));
 		else if (kok->speth[0] == 'l' && kok->speth[1] == 'l')
-			return ((void *)va_arg(ar, unsigned long long int));
+			return (va_arg(ar, unsigned long long int));
 		else if (kok->speth[0] == 'l')
-			return ((void *)va_arg(ar, unsigned long int));
+			return (va_arg(ar, unsigned long int));
 	}
-	return (error);
+	return (-2);
 }
 
 char	space_or_zero(t_il *kok)

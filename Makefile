@@ -6,7 +6,7 @@
 #    By: gusujio <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/22 14:43:32 by gusujio           #+#    #+#              #
-#    Updated: 2019/11/26 12:42:39 by gusujio          ###   ########.fr        #
+#    Updated: 2019/11/26 21:55:39 by gusujio          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C ./libft re
-	gcc -c ft_printf.c  $(SRC) -L ./libft -lft
+	gcc -Wall -Wextra -Werror -c ft_printf.c  $(SRC)
 	ar rc $(NAME) ft_printf.o  $(OBJ)
 	ranlib $(NAME)
 

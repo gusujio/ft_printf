@@ -184,7 +184,7 @@ char	*revers_s(const int *s, long long int i)
 	s2[i] = 0;
 	j = 0;
 	while (--i >= 0)
-		s2[j++] = s[i] + 48;
+		s2[j++] = (char)(s[i] + 48);
 	if (s2[0] == '0')
 	{
 		w = s2;

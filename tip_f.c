@@ -83,7 +83,7 @@ void	okr2(char **s, int l, int d)
 	d = 10 - (*s)[l] + 48;
 	while ((*s)[l] != '.')
 	{
-		(*s)[l] += d;
+		(*s)[l] = (char)((*s)[l] + d);
 		d = 0;
 		if ((*s)[l] == ':')
 		{
@@ -92,7 +92,7 @@ void	okr2(char **s, int l, int d)
 		}
 		l--;
 	}
-	(*s)[l - 1] += d;
+	(*s)[l - 1] = (char)(d + (*s)[l - 1]);
 	if ((*s)[0] == ':' && d)
 		*s = ft_strjoin2("10", *s + 1);
 	else if ((*s)[1] == ':' && d)

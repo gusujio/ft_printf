@@ -46,13 +46,13 @@ void	obr_point_p(t_il *kok, char **v)
 
 char	*table_p(t_il *kok, va_list ar)
 {
-	void	*v1;
+	long long int	v1;
 	char	*v;
 
-	if ((v1 = flag_sign(kok, ar)) == (void *)-2)
-		v1 = (void *)va_arg(ar, unsigned long int);
-	kok->v_i = v1;
-	v = perevod(v1, 'x');
+	if ((v1 = flag_sign(kok, ar)) == -2)
+		v1 = va_arg(ar, unsigned long int);
+	kok->v_i = (void *)v1;
+	v = perevod((long long int)v1, 'x');
 	obr_resh(kok, &v);
 	obr_point_p(kok, &v);
 	v = ft_strjoin2("0x", v);

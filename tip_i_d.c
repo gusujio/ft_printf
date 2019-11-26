@@ -57,12 +57,12 @@ void	obr_point_i_d(t_il *kok, char **v)
 
 char	*table_i_d(t_il *kok, va_list ar)
 {
-	void	*v1;
+	long long int	v1;
 	char	*v;
 
-	if ((v1 = flag_sign(kok, ar)) == (void *)-2)
-		v1 = (void *)va_arg(ar, int);
-	kok->v_i = v1;
+	if ((v1 = flag_sign(kok, ar)) == -2)
+		v1 = va_arg(ar, int);
+	kok->v_i = (void*)v1;
 	v = ft_itoa(v1);
 	obr_point_i_d(kok, &v);
 	if (kok->plus && v[0] != '-')

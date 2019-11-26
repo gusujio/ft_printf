@@ -22,7 +22,7 @@ void	obr_width_x(t_il *kok, char **v, int p, char c)
 
 	if ((n = p ? kok->width : kok->point) < 0 && kok->mines)
 		return ;
-	k = ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
+	k = (int)ft_strlen(*v) - (!p ? (((*v)[0] == '-') + ((*v)[0] == '+')) : 0);
 	l = n - k + !p * 2 * kok->resh;
 	l = l > 0 ? l : 0;
 	buf = (char *)malloc((l) + 1);
@@ -43,13 +43,13 @@ void	obr_width_x(t_il *kok, char **v, int p, char c)
 
 char	*table_x(t_il *kok, va_list ar)
 {
-	void	*v1;
+	unsigned long long int	v1;
 	char	*v;
 
-	if ((v1 = flag_unsign(kok, ar)) == (void *)-2)
-		v1 = (void *)va_arg(ar, unsigned int);
-	kok->v_i = v1;
-	v = perevod(v1, kok->type);
+	if ((int)(v1 = flag_unsign(kok, ar)) == -2)
+		v1 = va_arg(ar, unsigned int);
+	kok->v_i = (void*)v1;
+	v = perevod((long long int)v1, kok->type);
 	obr_resh(kok, &v);
 	obr_point_i_d(kok, &v);
 	obr_width_x(kok, &v, 1, space_or_zero(kok));

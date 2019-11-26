@@ -46,8 +46,8 @@ char						*perevod(long long int x, char c)
 		ost = (x - (osn * (x / osn))) + 48;
 		if (ost > 57)
 			ost = (c - 24) + (ost - 57);
-		s[size] = ost;
-		x /= osn;
+		s[size] = (char)ost;
+		x /= (long long int)osn;
 	}
 	return (s);
 }

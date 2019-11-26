@@ -26,7 +26,7 @@ void	print_m_c_z(char **c, int i, int j)
 			ft_putchar(c[x][y]);
 			y++;
 		}
-		ft_putchar("\n");
+		ft_putchar('\n');
 		x++;
 	}
 }
@@ -45,7 +45,7 @@ void	print_m_c(char **c)
 			ft_putchar(c[x][y]);
 			y++;
 		}
-		ft_putchar("\n");
+		ft_putchar('\n');
 		x++;
 	}
 }
@@ -64,7 +64,7 @@ void	print_m_i(int **c, int i, int j)
 			ft_printf("%d ", c[x][y]);
 			y++;
 		}
-		ft_putchar("\n");
+		ft_putchar('\n');
 		x++;
 	}
 }

@@ -51,13 +51,13 @@ void	obr_point_o(t_il *kok, char **v)
 
 char	*table_o(t_il *kok, va_list ar)
 {
-	void	*v1;
+	unsigned long long int	v1;
 	char	*v;
 
-	if ((v1 = flag_unsign(kok, ar)) == (void *)-2)
-		v1 = (void *)va_arg(ar, unsigned int);
-	kok->v_i = v1;
-	v = perevod(v1, kok->type);
+	if ((int)(v1 = flag_unsign(kok, ar)) == -2)
+		v1 = va_arg(ar, unsigned int);
+	kok->v_i = (void *)v1;
+	v = perevod((long long int)v1, kok->type);
 	obr_resh(kok, &v);
 	obr_point_o(kok, &v);
 	obr_width_o(kok, &v, 1, space_or_zero(kok));

@@ -34,8 +34,7 @@ char	*table(va_list ar, t_il *kok)
 		table_m(kok, ar);
 	else if (kok->type == 'b')
 		return (ft_bit(va_arg(ar, int)));
-	else
-		return (ft_strdup(""));
+	return (ft_strdup(""));
 }
 
 void	delst(t_il *kok, char *s, int *len)

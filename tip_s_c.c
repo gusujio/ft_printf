@@ -41,7 +41,7 @@ char	*mop_s_c(t_il *kok, char *v)
 			v = ft_strjoin2("+", v);
 		obr_space(kok, &v);
 	}
-	if (ft_strlen(v) >= kok->point && kok->type == 's')
+	if (ft_strlen(v) >= (size_t)kok->point && kok->type == 's')
 		v[kok->point] = 0;
 	obr_width_s_c(kok, &v, kok->width, v[0] ? space_or_zero(kok) : ' ');
 	return (v);

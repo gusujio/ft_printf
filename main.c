@@ -14,7 +14,7 @@
 
 int	main(void)
 {
-	printf(" =%d\n", printf("{%.*d}", 5, 42));
-	printf(" =%d\n", ft_printf("{%.*d}", 5, 42));
+	printf(" =%d\n", printf("%x", 17));
+	printf(" =%d\n", ft_printf("%x", 17));
 	return (0);
 }
