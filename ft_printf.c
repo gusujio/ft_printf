@@ -163,6 +163,26 @@ char	*table(va_list ar, il *kok)
 		return (ft_strdup(""));
 }
 
+void    obr_str2(il **kok, char *s, int i)
+{
+	(*kok)->speth = NULL;
+	while (s[i] && !(*kok)->speth)
+	{
+		if (s[i] == 'l' && s[i + 1] != 'l')
+			(*kok)->speth = ft_strdup("l");
+		else if (s[i] == 'l')
+			(*kok)->speth = ft_strdup("ll");
+		else if (s[i] == 'h' && s[i + 1] != 'h')
+			(*kok)->speth = ft_strdup("h");
+		else if (s[i] == 'h')
+			(*kok)->speth = ft_strdup("hh");
+		else if (s[i] == 'L')
+			(*kok)->speth = ft_strdup("L");
+		i++;
+	}
+	(*kok)->type = s[ft_strlen(s) - 1];
+}
+
 void	obr_struct(il **kok, char *s)
 {
 	char	*k;
@@ -183,22 +203,23 @@ void	obr_struct(il **kok, char *s)
 	(*kok)->point = -1;
 	if ((k = ft_strchr(s, '.')))
 		(*kok)->point = ft_atoi(k + 1);
-	(*kok)->speth = NULL;
-	while (s[i] && !(*kok)->speth)
+	obr_str2(kok, s, i);
+}
+
+void    obr_zv2(char **s2, char **s, va_list ar, int i)
+{
+	*s2 = ft_itoa(va_arg(ar, int));
+	if (ft_isdigit((*s)[i + 1]) || ((*s)[i - 1] == '.' && (*s2)[0] == '-'))
 	{
-		if (s[i] == 'l' && s[i + 1] != 'l')
-			(*kok)->speth = ft_strdup("l");
-		else if (s[i] == 'l')
-			(*kok)->speth = ft_strdup("ll");
-		else if (s[i] == 'h' && s[i + 1] != 'h')
-			(*kok)->speth = ft_strdup("h");
-		else if (s[i] == 'h')
-			(*kok)->speth = ft_strdup("hh");
-		else if (s[i] == 'L')
-			(*kok)->speth = ft_strdup("L");
-		i++;
+		ft_strdel(s2);
+		*s2 = ft_strdup("");
+		(*s)[i - 1] == '.' ? (*s)[i - 1] = 0 : 0;
 	}
-	(*kok)->type = s[ft_strlen(s) - 1];
+	*s2 = ft_strjoin1(*s2, s[i + 1]);
+	*s[i] = 0;
+	*s2 = ft_strjoin2(*s, *s2);
+	ft_strdel(s);
+	*s = *s2;
 }
 
 char	*obr_zv(const char *s0, va_list ar, int *len)
@@ -217,20 +238,7 @@ char	*obr_zv(const char *s0, va_list ar, int *len)
 	while (s[i] && s[i] != ' ')
 	{
 		if (s[i] == '*')
-		{
-			s2 = ft_itoa(va_arg(ar, int));
-			if (ft_isdigit(s[i + 1]) || (s[i - 1] == '.' && s2[0] == '-'))
-			{
-				ft_strdel(&s2);
-				s2 = ft_strdup("");
-				s[i - 1] == '.' ? s[i - 1] = 0 : 0;
-			}
-			s2 = ft_strjoin1(s2, &(s[i + 1]));
-			s[i] = 0;
-			s2 = ft_strjoin2(s, s2);
-			ft_strdel(&s);
-			s = s2;
-		}
+			obr_zv2(&s2, &s, ar, i);
 		i++;
 	}
 	return (s2);
@@ -251,9 +259,8 @@ int		ft_printf(const char *restrict format, ...)
 	int		len;
 	char	*s;
 	il		*kok;
-
-	kok = malloc(sizeof(il));
-	ft_bzero(kok, sizeof(il));
+	
+	ft_bzero(kok = malloc(sizeof(il)), sizeof(il));
 	i = -1;
 	len = 0;
 	va_start(ar, format);

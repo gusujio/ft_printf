@@ -50,12 +50,16 @@ typedef union			types
 	unsigned long long	m;
 	short int			e[5];
 }						ilia;
-
+char	*ft_degr5(int k);
+char	*ft_degr2(int k);
+char*	dop(int *k, char **k2, char *m[60]);
+char	*del10(char *s, int k);
+//void	ft_m2(const char *wer, const char *wer1, int *cc[99999], int r);
+char	*revers_s(const int *s, long long int i);
 char            *ft_strdup2(char *s);
 char            *del10(char *s, int k);
-char            *ft_degr5(int k);
-char            *ft_degr2(int k);
-char            *ft_multi(char *wer1, char* wer);
+char	*ft_degr(int k, int i);
+char	*ft_multi(char *wer1,char *wer);
 int             *ft_revers_ari(const int *ar, int size);
 int             ft_printf(const char *restrict format, ...);
 int             get_nb_size(unsigned long long int nb);

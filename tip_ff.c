@@ -62,12 +62,12 @@ char	*obr_f(ilia ili, char *man, int z, il *kok)
 	}
 	if (ili.e[4] > 0)
 	{
-		s = ft_degr2(ili.e[4]);
+		s = ft_degr(ili.e[4], 2);
 		tail = ft_multi(man, s);
 	}
 	else
 	{
-		s = ft_degr5(ili.e[4] * -1);
+		s = ft_degr(ili.e[4] * -1, 5);
 		tail = del10(ft_multi(man, s), ili.e[4] * -1);
 	}
 	okrug(kok, &tail);

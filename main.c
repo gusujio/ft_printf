@@ -2,7 +2,7 @@
 
 int main()
 {
-	printf(" =%d\n" , printf("%.0f", DBL_MAX));
-	printf(" =%d\n" , ft_printf("%.0f", DBL_MAX));
+	printf(" =%d\n" , printf("%f", 1.5));
+	printf(" =%d\n" , ft_printf("%f", 1.5));
 	return (0);
 }
