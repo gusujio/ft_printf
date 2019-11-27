@@ -6,7 +6,7 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 17:11:31 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/25 17:31:42 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:10:32 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	obr_point_i_d(t_il *kok, char **v)
 char	*table_i_d(t_il *kok, va_list ar)
 {
 	long long int	v1;
-	char	*v;
+	char			*v;
 
 	if ((v1 = flag_sign(kok, ar)) == -2)
 		v1 = va_arg(ar, int);
-	kok->v_i = (void*)v1;
+	kok->v_i = v1;
 	v = ft_itoa(v1);
 	obr_point_i_d(kok, &v);
 	if (kok->plus && v[0] != '-')

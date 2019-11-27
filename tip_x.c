@@ -6,7 +6,7 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 17:06:59 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/25 18:52:05 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:12:23 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	obr_width_x(t_il *kok, char **v, int p, char c)
 char	*table_x(t_il *kok, va_list ar)
 {
 	unsigned long long int	v1;
-	char	*v;
+	char					*v;
 
 	if ((int)(v1 = flag_unsign(kok, ar)) == -2)
 		v1 = va_arg(ar, unsigned int);
-	kok->v_i = (void*)v1;
-	v = perevod((long long int)v1, kok->type);
+	kok->v_i = v1;
+	v = perevod2(v1, kok->type);
 	obr_resh(kok, &v);
 	obr_point_i_d(kok, &v);
 	obr_width_x(kok, &v, 1, space_or_zero(kok));

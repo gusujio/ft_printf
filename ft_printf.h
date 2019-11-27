@@ -6,7 +6,7 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:07:20 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/26 17:00:42 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:06:44 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct			s_ilia
 	int					zero;
 	int					width;
 	int					point;
-	void				*v_i;
+	unsigned int		v_i;
 }						t_il;
 
 typedef union			u_types
@@ -46,6 +46,9 @@ typedef union			u_types
 	short int			e[5];
 }						t_ailia;
 
+unsigned long long int	sizes(unsigned long long int osn,
+						unsigned long long int ost);
+char					*perevod2(unsigned long long int x, char c);
 char					*del10(char *s, int k);
 char					*revers_s(const int *s, long long int i);
 char					*del10(char *s, int k);
@@ -59,8 +62,8 @@ void					obr_resh(t_il *kok, char **v);
 char					*obr_zv(const char *s0, va_list ar, int *len);
 void					obr_struct(t_il **kok, char *s);
 void					obr_sistem(char **v, char **buf, char c);
-long long int flag_sign(t_il *kok, va_list ar);
-unsigned long long int	flag_unsign(t_il *kok, va_list ar);
+long long int			flag_sign(t_il *kok, va_list ar);
+unsigned long int		flag_unsign(t_il *kok, va_list ar);
 char					*table(va_list ar, t_il *kok);
 char					space_or_zero(t_il *kek);
 void					table_m(t_il *kok, va_list ar);

@@ -6,7 +6,7 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 18:18:17 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/25 18:27:33 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:12:07 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char	*obr_f(t_ailia ili, char *man, int z, t_il *kok)
 
 char	*table_f(t_il *kok, va_list ar)
 {
-	t_ailia     ili;
-	int		    z;
-	char        *man;
+	t_ailia		ili;
+	int			z;
+	char		*man;
 
 	if (kok->speth)
 	{

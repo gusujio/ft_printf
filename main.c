@@ -6,15 +6,16 @@
 /*   By: gusujio <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 16:40:55 by gusujio           #+#    #+#             */
-/*   Updated: 2019/11/26 16:41:03 by gusujio          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:07:33 by gusujio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits.h>
 #include "ft_printf.h"
 
 int	main(void)
 {
-	printf(" =%d\n", printf("%x", 17));
-	printf(" =%d\n", ft_printf("%x", 17));
+	printf(" =%d\n", printf("%lo", ULONG_MAX));
+	printf(" =%d\n", ft_printf("%lo", ULONG_MAX));
 	return (0);
 }
